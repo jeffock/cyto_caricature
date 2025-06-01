@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "configurePresets": [
+      {
+        "name": "default",
+        "generator": "Ninja",
+        "binaryDir": "build",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "C:/Users/jeffo_work/Coding/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "VCPKG_TARGET_TRIPLET": "x64-windows"
+        }
+      }
+    ]
+  }
+  

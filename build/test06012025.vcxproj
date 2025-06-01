@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CD0FBEFA-18AE-3E1C-930D-87A89F122C3C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <VcpkgEnabled>false</VcpkgEnabled>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>test06012025</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="do_not_import_user.props" Condition="exists('do_not_import_user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\jeffo_work\Coding\object_counter\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">test06012025.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">test06012025</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\jeffo_work\Coding\object_counter\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">test06012025.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">test06012025</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\jeffo_work\Coding\object_counter\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">test06012025.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">test06012025</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\jeffo_work\Coding\object_counter\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">test06012025.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">test06012025</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/include/opencv4"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/jeffo_work/Coding/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary C:/Users/jeffo_work/Coding/object_counter/build/Debug/test06012025.exe -installedDir C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/debug/bin -OutVariable out
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_highgui4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_ml4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_objdetect4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_photo4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_stitching4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_video4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_videoio4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_imgcodecs4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_calib3d4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_dnn4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_features2d4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_flann4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_imgproc4d.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\debug\lib\opencv_core4d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/jeffo_work/Coding/object_counter/build/Debug/test06012025.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/jeffo_work/Coding/object_counter/build/Debug/test06012025.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/include/opencv4"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/jeffo_work/Coding/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary C:/Users/jeffo_work/Coding/object_counter/build/Release/test06012025.exe -installedDir C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/bin -OutVariable out
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_highgui4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_ml4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_objdetect4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_photo4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_stitching4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_video4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_videoio4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_imgcodecs4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_calib3d4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_dnn4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_features2d4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_flann4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_imgproc4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_core4.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/jeffo_work/Coding/object_counter/build/Release/test06012025.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/jeffo_work/Coding/object_counter/build/Release/test06012025.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/include/opencv4"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/jeffo_work/Coding/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary C:/Users/jeffo_work/Coding/object_counter/build/MinSizeRel/test06012025.exe -installedDir C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/bin -OutVariable out
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_highgui4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_ml4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_objdetect4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_photo4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_stitching4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_video4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_videoio4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_imgcodecs4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_calib3d4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_dnn4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_features2d4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_flann4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_imgproc4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_core4.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/jeffo_work/Coding/object_counter/build/MinSizeRel/test06012025.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/jeffo_work/Coding/object_counter/build/MinSizeRel/test06012025.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions) /external:I "C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/include/opencv4"</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\include\opencv4;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message></Message>
+      <Command>setlocal
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -noprofile -executionpolicy Bypass -file C:/Users/jeffo_work/Coding/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary C:/Users/jeffo_work/Coding/object_counter/build/RelWithDebInfo/test06012025.exe -installedDir C:/Users/jeffo_work/Coding/vcpkg/installed/x64-windows/bin -OutVariable out
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_highgui4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_ml4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_objdetect4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_photo4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_stitching4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_video4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_videoio4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_imgcodecs4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_calib3d4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_dnn4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_features2d4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_flann4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_imgproc4.lib;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\lib\opencv_core4.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Users/jeffo_work/Coding/object_counter/build/RelWithDebInfo/test06012025.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Users/jeffo_work/Coding/object_counter/build/RelWithDebInfo/test06012025.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\jeffo_work\Coding\object_counter\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/jeffo_work/Coding/object_counter/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-file C:/Users/jeffo_work/Coding/object_counter/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindTIFF.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\SelectLibraryConfigurations.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCXXCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeRCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeSystem.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\scripts\buildsystems\vcpkg.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/jeffo_work/Coding/object_counter/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-file C:/Users/jeffo_work/Coding/object_counter/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindTIFF.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\SelectLibraryConfigurations.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCXXCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeRCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeSystem.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\scripts\buildsystems\vcpkg.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/jeffo_work/Coding/object_counter/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-file C:/Users/jeffo_work/Coding/object_counter/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindTIFF.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\SelectLibraryConfigurations.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCXXCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeRCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeSystem.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\scripts\buildsystems\vcpkg.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/jeffo_work/Coding/object_counter/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-file C:/Users/jeffo_work/Coding/object_counter/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeDependentOption.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeFindDependencyMacro.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeInitializeConfigs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckCSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckIncludeFile.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Compiler\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindTIFF.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Internal\CheckSourceCompiles.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Linker\MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Linker\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-Initialize.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-4.0\Modules\SelectLibraryConfigurations.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeCXXCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeRCCompiler.cmake;C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\4.0.2\CMakeSystem.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslConfigVersion.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\absl\abslTargets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVConfig.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\opencv4\OpenCVModules.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config-version.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-generate.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-module.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-options.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\protobuf-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\protobuf\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\quirc\quirc-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\tiff\vcpkg-cmake-wrapper.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-config.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-debug.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets-release.cmake;C:\Users\jeffo_work\Coding\vcpkg\installed\x64-windows\share\utf8_range\utf8_range-targets.cmake;C:\Users\jeffo_work\Coding\vcpkg\scripts\buildsystems\vcpkg.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\jeffo_work\Coding\object_counter\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Users\jeffo_work\Coding\object_counter\main.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\jeffo_work\Coding\object_counter\build\ZERO_CHECK.vcxproj">
+      <Project>{063F437D-3408-32E7-AD68-B6D560A9EEA6}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

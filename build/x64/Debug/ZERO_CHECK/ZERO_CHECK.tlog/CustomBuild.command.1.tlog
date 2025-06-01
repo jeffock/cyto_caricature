@@ -1,0 +1,10 @@
+^C:\USERS\JEFFO_WORK\CODING\OBJECT_COUNTER\BUILD\CMAKEFILES\A512DB631B8563F6CC0979FA0E9C0342\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/jeffo_work/Coding/object_counter/build/MyApp.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

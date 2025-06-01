@@ -1,0 +1,10 @@
+^C:\USERS\JEFFO_WORK\CODING\OBJECT_COUNTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-file C:/Users/jeffo_work/Coding/object_counter/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
