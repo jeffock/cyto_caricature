@@ -23,7 +23,7 @@ int main()
 
     if(k == 's')
     {
-        imwrite("starry_night.png", img);
+        imwrite("image.png", img);
     }
 
     return 0;
