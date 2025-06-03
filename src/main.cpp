@@ -36,8 +36,23 @@ int main()
 
     if (k == 's')
     {
-        imwrite("saved_image.png", img);
-    }
+        // Create a copy so original is not altered
+        Mat blueOnly = img.clone();
+
+        // Zero out Red and Green channels, keep Blue channel
+        // img is BGR format by default in OpenCV
+        std::vector<Mat> channels(3);
+        split(blueOnly, channels);
+
+        channels[1] = Mat::zeros(channels[1].size(), channels[1].type()); // Green channel
+        channels[2] = Mat::zeros(channels[2].size(), channels[2].type()); // Red channel
+
+        merge(channels, blueOnly);
+
+        imshow("Display window", blueOnly);
+
+        waitKey(0); // Wait to see updated image
+        }
 
     return 0;
 }
