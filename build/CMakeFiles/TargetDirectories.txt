@@ -1,3 +1,0 @@
-C:/users/jeffo_work/coding/object_counter/build/CMakeFiles/image_viewer.dir
-C:/users/jeffo_work/coding/object_counter/build/CMakeFiles/ALL_BUILD.dir
-C:/users/jeffo_work/coding/object_counter/build/CMakeFiles/ZERO_CHECK.dir
