@@ -1,6 +1,6 @@
-^C:\USERS\JEFFO_WORK\CODING\OBJECT_COUNTER\BUILD\CMAKEFILES\A512DB631B8563F6CC0979FA0E9C0342\GENERATE.STAMP.RULE
+^C:\USERS\JEFFO_WORK\CODING\OBJECT_COUNTER\BUILD\CMAKEFILES\489A77EB8F7BB7A5A158105B81EEA51B\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/Users/jeffo_work/Coding/object_counter/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/jeffo_work/Coding/object_counter/build/MyApp.sln
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/jeffo_work/Coding/object_counter -BC:/users/jeffo_work/coding/object_counter/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/users/jeffo_work/coding/object_counter/build/ImageViewer.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
