@@ -83,17 +83,41 @@ int main()
     }
 
     imshow("Display window", img);
-    int firstKey = waitKey(0);
+    Mat currentImg;
 
-    if (firstKey == 'c')
-    {
-        Mat blueOnly = showBlueChannelOnly(img);
-        imshow("Display window", blueOnly);
-        waitKey(0);
+    while (true) {
+        int key = waitKey(0);
+
+        if (key == 27) break; // 27 -> Esc
+
+        if (key == 'c') {
+            currentImg = showBlueChannelOnly(img);
+            imshow("Display window", currentImg);
+        }
+        else if (key == 'g') {
+            currentImg = toGrayscale(img);
+            imshow("Display window", currentImg);
+        }
+        else if (key == 'b') {
+            currentImg = gaussianFilter(img); 
+            imshow("Display window", currentImg);
+        }
+        else if (key == 'p') {
+            currentImg = intensityThreshold(img); 
+            imshow("Display window", currentImg);
+        }
+        else if (key == 'w') {
+            WatershedOutput watershedOut= runWatershed(img); 
+            currentImg = watershedOut.watershedOutImg;
+            int objectCount = watershedOut.count;
+            imshow("Display window", currentImg);
+            std::cout << objectCount << std::endl;
+        }
+        else if (key == 'r') {
+            currentImg = img.clone(); 
+            imshow("Display window", currentImg);
+        }
     }
-
-    //TODO
-    // write waitKey & related if statements for all steps
 
     return 0;
 }
