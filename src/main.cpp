@@ -7,6 +7,21 @@
 
 using namespace cv;
 
+// Function that returns an image with only the blue channel preserved
+Mat showBlueChannelOnly(const Mat& img)
+{
+    Mat blueOnly = img.clone();
+
+    std::vector<Mat> channels(3);
+    split(blueOnly, channels);
+
+    channels[1] = Mat::zeros(channels[1].size(), channels[1].type()); // Zero Green
+    channels[2] = Mat::zeros(channels[2].size(), channels[2].type()); // Zero Red
+
+    merge(channels, blueOnly);
+    return blueOnly;
+}
+
 int main()
 {
     // Open file dialog to choose image
@@ -32,27 +47,16 @@ int main()
     }
 
     imshow("Display window", img);
-    int k = waitKey(0); // Wait for a keystroke
+    int firstKey = waitKey(0); // Wait for a keystroke
 
-    if (k == 's')
+    if (firstKey == 'c')
     {
-        // Create a copy so original is not altered
-        Mat blueOnly = img.clone();
-
-        // Zero out Red and Green channels, keep Blue channel
-        // img is BGR format by default in OpenCV
-        std::vector<Mat> channels(3);
-        split(blueOnly, channels);
-
-        channels[1] = Mat::zeros(channels[1].size(), channels[1].type()); // Green channel
-        channels[2] = Mat::zeros(channels[2].size(), channels[2].type()); // Red channel
-
-        merge(channels, blueOnly);
-
+        Mat blueOnly = showBlueChannelOnly(img);
         imshow("Display window", blueOnly);
-
-        waitKey(0); // Wait to see updated image
-        }
+        waitKey(0);
+    }
 
     return 0;
 }
+
+
