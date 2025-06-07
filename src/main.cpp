@@ -7,7 +7,6 @@
 
 using namespace cv;
 
-// Function that returns an image with only the blue channel preserved
 Mat showBlueChannelOnly(const Mat& img)
 {
     Mat blueOnly = img.clone();
@@ -22,9 +21,46 @@ Mat showBlueChannelOnly(const Mat& img)
     return blueOnly;
 }
 
+//TODO
+Mat toGrayscale(const Mat& img)
+{
+    Mat grayscale = img.clone();
+
+    return grayscale;
+}
+
+//TODO
+Mat gaussianFilter(const Mat& img)
+{
+    Mat blurredImg = img.clone();
+
+    return blurredImg;
+}
+
+//TODO
+Mat intensityThreshold(const Mat& img)
+{
+    Mat pixIntensityThresh = img.clone();
+
+    return pixIntensityThresh;
+}
+
+struct WatershedOutput {
+    Mat watershedOutImg;
+    int count;
+};
+
+//TODO
+WatershedOutput runWatershed(const Mat& img) 
+{
+    Mat watershedImg = img.clone();
+    int objCount = 0;
+
+    return {watershedImg, objCount};
+}
+
 int main()
 {
-    // Open file dialog to choose image
     const char* filetypes[] = { "*.jpg", "*.png", "*.tif", "*.bmp" };
     const char* image_path = tinyfd_openFileDialog(
         "Select an image",
@@ -47,7 +83,7 @@ int main()
     }
 
     imshow("Display window", img);
-    int firstKey = waitKey(0); // Wait for a keystroke
+    int firstKey = waitKey(0);
 
     if (firstKey == 'c')
     {
@@ -55,6 +91,9 @@ int main()
         imshow("Display window", blueOnly);
         waitKey(0);
     }
+
+    //TODO
+    // write waitKey & related if statements for all steps
 
     return 0;
 }
