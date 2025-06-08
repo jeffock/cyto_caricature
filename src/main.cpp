@@ -42,18 +42,15 @@ Mat gaussianFilter(const Mat& img)
     return blurredImg;
 }
 
-//TODO
 Mat intensityThreshold(const Mat& img)
 {
     Mat gray, binary;
 
-    // Convert to grayscale if needed
     if (img.channels() == 3)
         cvtColor(img, gray, COLOR_BGR2GRAY);
     else
         gray = img;
 
-    // Apply automatic thresholding using Otsu's method (similar to Fiji's "Default")
     threshold(gray, binary, 0, 255, THRESH_BINARY | THRESH_OTSU);
 
     return binary;
