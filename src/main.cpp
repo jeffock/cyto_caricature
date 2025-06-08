@@ -1,5 +1,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 
 #include <iostream>
@@ -25,6 +26,8 @@ Mat showBlueChannelOnly(const Mat& img)
 Mat toGrayscale(const Mat& img)
 {
     Mat grayscale = img.clone();
+
+    cvtColor(img, grayscale, COLOR_BGR2GRAY);
 
     return grayscale;
 }
@@ -59,6 +62,13 @@ WatershedOutput runWatershed(const Mat& img)
     return {watershedImg, objCount};
 }
 
+Mat generateLabelMatrix(const Mat& img)
+{
+    Mat labelMatrixImg = img.clone();
+
+    return labelMatrixImg;
+}
+
 int main()
 {
     const char* filetypes[] = { "*.jpg", "*.png", "*.tif", "*.bmp" };
@@ -83,7 +93,7 @@ int main()
     }
 
     imshow("Display window", img);
-    Mat currentImg;
+    Mat currentImg = img.clone();
 
     while (true) {
         int key = waitKey(0);
@@ -91,23 +101,23 @@ int main()
         if (key == 27) break; // 27 -> Esc
 
         if (key == 'c') {
-            currentImg = showBlueChannelOnly(img);
+            currentImg = showBlueChannelOnly(currentImg);
             imshow("Display window", currentImg);
         }
         else if (key == 'g') {
-            currentImg = toGrayscale(img);
+            currentImg = toGrayscale(currentImg);
             imshow("Display window", currentImg);
         }
         else if (key == 'b') {
-            currentImg = gaussianFilter(img); 
+            currentImg = gaussianFilter(currentImg); 
             imshow("Display window", currentImg);
         }
         else if (key == 'p') {
-            currentImg = intensityThreshold(img); 
+            currentImg = intensityThreshold(currentImg); 
             imshow("Display window", currentImg);
         }
         else if (key == 'w') {
-            WatershedOutput watershedOut= runWatershed(img); 
+            WatershedOutput watershedOut= runWatershed(currentImg); 
             currentImg = watershedOut.watershedOutImg;
             int objectCount = watershedOut.count;
             imshow("Display window", currentImg);
