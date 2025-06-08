@@ -2,6 +2,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <map>
 
 #include <iostream>
 #include "tinyfiledialogs.h"
@@ -57,24 +58,74 @@ Mat intensityThreshold(const Mat& img)
 }
 
 struct WatershedOutput {
-    Mat watershedOutImg;
+    cv::Mat watershedOutImg;
     int count;
 };
 
 //TODO
-WatershedOutput runWatershed(const Mat& img) 
+WatershedOutput runWatershed(const cv::Mat& img) 
 {
-    Mat watershedImg = img.clone();
-    int objCount = 0;
+    using namespace cv;
+    // Noise removal with morphological opening
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+    Mat opening;
+    morphologyEx(img, opening, MORPH_OPEN, kernel, Point(-1, -1), 2);
 
-    return {watershedImg, objCount};
-}
+    // Sure background area (dilated)
+    Mat sureBg;
+    dilate(opening, sureBg, kernel, Point(-1, -1), 3);
 
-Mat generateLabelMatrix(const Mat& img)
-{
-    Mat labelMatrixImg = img.clone();
+    // Sure foreground area using distance transform
+    Mat distTransform;
+    distanceTransform(opening, distTransform, DIST_L2, 5);
+    Mat sureFg;
+    double minVal, maxVal;
+    minMaxLoc(distTransform, &minVal, &maxVal);
+    threshold(distTransform, sureFg, 0.4 * maxVal, 255, 0);
+    sureFg.convertTo(sureFg, CV_8U);
 
-    return labelMatrixImg;
+    // Unknown region = background - foreground
+    Mat unknown;
+    subtract(sureBg, sureFg, unknown);
+
+    // Label markers
+    Mat markers;
+    connectedComponents(sureFg, markers);
+    markers += 1; // make sure background is not 0
+    markers.setTo(0, unknown); // mark unknown as 0
+
+    // Prepare input for watershed (needs 3 channels)
+    Mat colorImg;
+    if (img.channels() == 1)
+        cvtColor(img, colorImg, COLOR_GRAY2BGR);
+    else
+        colorImg = img.clone();
+
+    // Apply watershed
+    watershed(colorImg, markers);
+
+    // Generate output image
+    Mat output = Mat::zeros(markers.size(), CV_8UC3);
+    int count = 0;
+    std::map<int, Vec3b> colorMap;
+
+    for (int r = 0; r < markers.rows; ++r) {
+        for (int c = 0; c < markers.cols; ++c) {
+            int idx = markers.at<int>(r, c);
+            if (idx == -1) {
+                output.at<Vec3b>(r, c) = Vec3b(255, 255, 255); // boundary
+            }
+            else if (idx > 1) {
+                if (colorMap.find(idx) == colorMap.end()) {
+                    colorMap[idx] = Vec3b(rand() % 256, rand() % 256, rand() % 256);
+                    count++;
+                }
+                output.at<Vec3b>(r, c) = colorMap[idx];
+            }
+        }
+    }
+
+    return { output, count };
 }
 
 int main()
@@ -103,6 +154,10 @@ int main()
     imshow("Display window", img);
     Mat currentImg = img.clone();
 
+    bool singleChannel = false;
+    bool isGrayscale = false;
+    bool isBinary = false;
+
     while (true) {
         int key = waitKey(0);
 
@@ -110,10 +165,12 @@ int main()
 
         if (key == 'c') {
             currentImg = showBlueChannelOnly(currentImg);
+            singleChannel = true;
             imshow("Display window", currentImg);
         }
         else if (key == 'g') {
             currentImg = toGrayscale(currentImg);
+            isGrayscale = true;
             imshow("Display window", currentImg);
         }
         else if (key == 'b') {
@@ -122,17 +179,27 @@ int main()
         }
         else if (key == 'p') {
             currentImg = intensityThreshold(currentImg); 
+            isBinary = true;
             imshow("Display window", currentImg);
         }
         else if (key == 'w') {
-            WatershedOutput watershedOut= runWatershed(currentImg); 
-            currentImg = watershedOut.watershedOutImg;
-            int objectCount = watershedOut.count;
-            imshow("Display window", currentImg);
-            std::cout << objectCount << std::endl;
+            if (singleChannel && isGrayscale && isBinary) {
+                WatershedOutput watershedOut= runWatershed(currentImg); 
+                currentImg = watershedOut.watershedOutImg;
+                int objectCount = watershedOut.count;
+                imshow("Display window", currentImg);
+                std::cout << objectCount << std::endl;
+            } 
+            else {
+                std::cout << "Run the pre-requisite processing first." << std::endl;
+            }
+            
         }
         else if (key == 'r') {
             currentImg = img.clone(); 
+            singleChannel = false;
+            isGrayscale = false;
+            isBinary = false;
             imshow("Display window", currentImg);
         }
     }
