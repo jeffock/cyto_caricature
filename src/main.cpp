@@ -22,7 +22,7 @@ Mat showBlueChannelOnly(const Mat& img)
     return blueOnly;
 }
 
-//TODO
+
 Mat toGrayscale(const Mat& img)
 {
     Mat grayscale = img.clone();
@@ -32,7 +32,7 @@ Mat toGrayscale(const Mat& img)
     return grayscale;
 }
 
-//TODO
+
 Mat gaussianFilter(const Mat& img)
 {
     Mat blurredImg = img.clone();
@@ -45,9 +45,18 @@ Mat gaussianFilter(const Mat& img)
 //TODO
 Mat intensityThreshold(const Mat& img)
 {
-    Mat pixIntensityThresh = img.clone();
+    Mat gray, binary;
 
-    return pixIntensityThresh;
+    // Convert to grayscale if needed
+    if (img.channels() == 3)
+        cvtColor(img, gray, COLOR_BGR2GRAY);
+    else
+        gray = img;
+
+    // Apply automatic thresholding using Otsu's method (similar to Fiji's "Default")
+    threshold(gray, binary, 0, 255, THRESH_BINARY | THRESH_OTSU);
+
+    return binary;
 }
 
 struct WatershedOutput {
