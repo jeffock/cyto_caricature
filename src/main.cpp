@@ -195,6 +195,20 @@ int main()
             }
             
         }
+        else if (key == 13) {
+            currentImg = showBlueChannelOnly(currentImg);
+            currentImg = toGrayscale(currentImg);
+            currentImg = gaussianFilter(currentImg);
+            currentImg = intensityThreshold(currentImg);
+            
+            WatershedOutput watershedOut= runWatershed(currentImg); 
+            currentImg = watershedOut.watershedOutImg;
+            int objectCount = watershedOut.count;
+            imshow("Display window", currentImg);
+
+            std::cout << "Object Count:" << std::endl;
+            std::cout << objectCount << std::endl;
+        }
         else if (key == 'r') {
             currentImg = img.clone(); 
             singleChannel = false;
