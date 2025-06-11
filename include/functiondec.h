@@ -3,6 +3,7 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
 #include <map>
+#include <set>
 
 #include <iostream>
 
@@ -59,9 +60,9 @@ Mat intensityThreshold(const Mat& img)
 struct WatershedOutput {
     cv::Mat watershedOutImg;
     int count;
+    cv::Mat markers;
 };
 
-//TODO
 WatershedOutput runWatershed(const cv::Mat& img) 
 {
     using namespace cv;
@@ -124,5 +125,49 @@ WatershedOutput runWatershed(const cv::Mat& img)
         }
     }
 
-    return { output, count };
+    return { output, count, markers };
+}
+
+std::vector<double> calculateNSI(const cv::Mat& markers) {
+    using namespace cv;
+
+    std::vector<double> nsis;
+
+    //DEBUGGING
+    //std::cout << "NSI FUNCTION RUNNING" << std::endl;
+
+    // Skip labels: 0 (unknown) and -1 (watershed boundary)
+    std::set<int> labels;
+    for (int r = 0; r < markers.rows; ++r) {
+        for (int c = 0; c < markers.cols; ++c) {
+            int label = markers.at<int>(r, c);
+            if (label > 1) {
+                labels.insert(label);
+            }
+        }
+    }
+
+    for (int label : labels) {
+        // Create binary mask for this label
+        Mat mask = (markers == label);
+
+        // Find contours for perimeter
+        std::vector<std::vector<Point>> contours;
+        findContours(mask, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+
+        double area = countNonZero(mask);
+        double perimeter = 0.0;
+
+        if (!contours.empty()) {
+            perimeter = arcLength(contours[0], true);
+        }
+
+        // Avoid divide-by-zero
+        if (area > 0)
+            nsis.push_back((perimeter * perimeter) / (4 * CV_PI * area));
+        else
+            nsis.push_back(0.0);
+    }
+
+    return nsis;
 }

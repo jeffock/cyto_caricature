@@ -41,6 +41,8 @@ int main()
     bool isBinary = false;
     bool cellsSegmented = false;
 
+    WatershedOutput watershedOut;
+
     while (true) {
         int key = waitKey(0);
 
@@ -67,7 +69,7 @@ int main()
         }
         else if (key == 'w') {
             if (singleChannel && isGrayscale && isBinary) {
-                WatershedOutput watershedOut= runWatershed(currentImg); 
+                WatershedOutput watershedOut = runWatershed(currentImg); 
                 currentImg = watershedOut.watershedOutImg;
                 int objectCount = watershedOut.count;
                 imshow("Display window", currentImg);
@@ -85,16 +87,33 @@ int main()
             currentImg = gaussianFilter(currentImg);
             currentImg = intensityThreshold(currentImg);
             
-            WatershedOutput watershedOut= runWatershed(currentImg); 
+            watershedOut = runWatershed(currentImg); 
             currentImg = watershedOut.watershedOutImg;
             int objectCount = watershedOut.count;
             imshow("Display window", currentImg);
+
+            cellsSegmented = true;
 
             std::cout << "Object Count:" << std::endl;
             std::cout << objectCount << std::endl;
         }
         else if (key == 's' && cellsSegmented) {
-            //CSI
+            //DEBUGGING:
+            //std::cout << "ELIF BLOCK RUNNING" << std::endl;
+
+            std::vector<double> nsis = calculateNSI(watershedOut.markers);
+
+            if (nsis.empty()) {
+                std::cout << "No nuclei found to calculate NSI.\n";
+            } else {
+                double sum = 0.0;
+                for (double nsi : nsis) {
+                    sum += nsi;
+                }
+                double avgNSI = sum / nsis.size();
+
+                std::cout << "Average Nuclear Spreading Index (NSI): " << avgNSI << std::endl;
+            }
         }
         else if (key == 'r') {
             currentImg = img.clone(); 
