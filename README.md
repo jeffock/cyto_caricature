@@ -10,7 +10,7 @@ To automatically count objects from an uploaded tif/tiff file, with a focus on c
 - Press 'p' to run pixel intensity threshold [O]
 - Press 'w' to run watershed algorithm [O]
 
-- Press 'Enter' to run all previous step at once [X]
+- Press 'Enter' to run all previous step at once [O]
 
 - Press 's' to calculate cell spreading index & generate a heatmap figure [X]
 

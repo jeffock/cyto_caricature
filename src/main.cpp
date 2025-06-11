@@ -39,6 +39,7 @@ int main()
     bool singleChannel = false;
     bool isGrayscale = false;
     bool isBinary = false;
+    bool cellsSegmented = false;
 
     while (true) {
         int key = waitKey(0);
@@ -71,6 +72,7 @@ int main()
                 int objectCount = watershedOut.count;
                 imshow("Display window", currentImg);
                 std::cout << objectCount << std::endl;
+                cellsSegmented = true;
             } 
             else {
                 std::cout << "Run the pre-requisite processing first." << std::endl;
@@ -91,12 +93,19 @@ int main()
             std::cout << "Object Count:" << std::endl;
             std::cout << objectCount << std::endl;
         }
+        else if (key == 's' && cellsSegmented) {
+            //CSI
+        }
         else if (key == 'r') {
             currentImg = img.clone(); 
             singleChannel = false;
             isGrayscale = false;
             isBinary = false;
             imshow("Display window", currentImg);
+
+            if (cellsSegmented) {
+                cellsSegmented = false;
+            }
         }
     }
 
