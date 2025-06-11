@@ -42,6 +42,7 @@ int main()
     bool cellsSegmented = false;
 
     WatershedOutput watershedOut;
+    std::vector<double> nsis;
 
     while (true) {
         int key = waitKey(0);
@@ -101,7 +102,7 @@ int main()
             //DEBUGGING:
             //std::cout << "ELIF BLOCK RUNNING" << std::endl;
 
-            std::vector<double> nsis = calculateNSI(watershedOut.markers);
+            nsis = calculateNSI(watershedOut.markers);
 
             if (nsis.empty()) {
                 std::cout << "No nuclei found to calculate NSI.\n";
@@ -114,6 +115,11 @@ int main()
 
                 std::cout << "Average Nuclear Spreading Index (NSI): " << avgNSI << std::endl;
             }
+        }
+        else if (key == 'h' && !nsis.empty()) {
+            cv::Mat NSIheatmap = createNSIHeatmap(watershedOut.markers, nsis);
+
+            cv::imshow("NSI Heatmap", NSIheatmap);
         }
         else if (key == 'r') {
             currentImg = img.clone(); 

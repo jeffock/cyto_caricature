@@ -4,6 +4,8 @@
 #include <opencv2/highgui.hpp>
 #include <map>
 #include <set>
+#include <algorithm>
+#include <vector>
 
 #include <iostream>
 
@@ -170,4 +172,57 @@ std::vector<double> calculateNSI(const cv::Mat& markers) {
     }
 
     return nsis;
+}
+
+// Helper: map normalized NSI (0-1) to blue-red color
+cv::Vec3b nsiToColor(float normVal) {
+    uchar r = static_cast<uchar>(255 * normVal);
+    uchar g = 0;
+    uchar b = static_cast<uchar>(255 * (1.0f - normVal));
+    return cv::Vec3b(b, g, r);
+}
+
+// Main function to create NSI heatmap
+cv::Mat createNSIHeatmap(const cv::Mat& markers, const std::vector<double>& nsis) {
+    cv::Mat heatmap = cv::Mat::zeros(markers.size(), CV_8UC3);
+
+    if (nsis.empty()) return heatmap;
+
+    // Find min and max NSI for normalization
+    double minNSI = *std::min_element(nsis.begin(), nsis.end());
+    double maxNSI = *std::max_element(nsis.begin(), nsis.end());
+
+    // Print NSI min/max info with colors
+    std::cout << "Minimum NSI: " << minNSI << " (blue color: BGR = "
+    << (int)(255) << ", " << 0 << ", " << 0 << ")\n";
+    std::cout << "Maximum NSI: " << maxNSI << " (red color: BGR = "
+    << 0 << ", " << 0 << ", " << (int)(255) << ")\n";
+
+    std::map<int, cv::Vec3b> nsiColors;
+    int idx = 0;
+
+    // Assign a color to each label starting from label=2 (as per your markers)
+    for (int label = 2; label < 2 + static_cast<int>(nsis.size()); ++label) {
+        float normVal = 0.f;
+        if (maxNSI != minNSI) {
+            normVal = static_cast<float>((nsis[idx] - minNSI) / (maxNSI - minNSI));
+        }
+        nsiColors[label] = nsiToColor(normVal);
+        idx++;
+    }
+
+    // Color each pixel according to its segment's NSI color
+    for (int r = 0; r < markers.rows; ++r) {
+        for (int c = 0; c < markers.cols; ++c) {
+            int label = markers.at<int>(r, c);
+            if (label > 1) {
+                auto it = nsiColors.find(label);
+                if (it != nsiColors.end()) {
+                    heatmap.at<cv::Vec3b>(r, c) = it->second;
+                }
+            }
+        }
+    }
+
+    return heatmap;
 }
