@@ -17,6 +17,46 @@
 
 using namespace cv;
 
+// Global var :(
+static bool showImageViewer = false;
+std::string imageFilename;
+
+void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
+    const char* filter_patterns[] = { "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.tif", "*.tiff" };
+    const char* file = tinyfd_openFileDialog(
+        "Open Image",
+        "",
+        5,
+        filter_patterns,
+        "Image files",
+        0
+    );
+
+    if (file) {
+        imageFilename = std::string(file);
+
+        cv::Mat img = cv::imread(file, cv::IMREAD_COLOR);
+        if (img.empty()) {
+            std::cerr << "Failed to load image." << std::endl;
+        } else {
+            cv::cvtColor(img, img, cv::COLOR_BGR2RGB); // OpenGL wants RGB
+            imageWidth = img.cols;
+            imageHeight = img.rows;
+
+            if (imageTexture) glDeleteTextures(1, &imageTexture);
+            glGenTextures(1, &imageTexture);
+            glBindTexture(GL_TEXTURE_2D, imageTexture);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, img.data);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+            glBindTexture(GL_TEXTURE_2D, 0);
+
+            showImageViewer = true;
+        }
+    }
+}
+
 int main()
 {
 
@@ -62,6 +102,13 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
+    GLuint imageTexture = 0;
+    int imageWidth = 0;
+    int imageHeight = 0;
+
+    // Bools for GetKey
+    bool openRequested = false;
+
     // Main loop
     while (!glfwWindowShouldClose(window)) {
         // Poll and handle events
@@ -72,10 +119,24 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // Ctrl+O
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+            openRequested = true;
+        }
+        if (openRequested) {
+            openRequested = false;
+            OpenImage(imageTexture, imageWidth, imageHeight);
+        }
+
+        //static bool showImageViewer = true;
+
         // Menu Bar
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
-                ImGui::MenuItem("Open", "Ctrl+O");
+                if (ImGui::MenuItem("Open", "Ctrl+O")) {
+                    OpenImage(imageTexture, imageWidth, imageHeight);
+                }
                 ImGui::MenuItem("Open Directory", "Ctrl+Shift+O");
                 ImGui::MenuItem("Save", "Ctrl+S");
                 ImGui::MenuItem("Exit", "Alt+F4");
@@ -91,11 +152,22 @@ int main()
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
+        
         }
+
+        if (showImageViewer) {
+            if (ImGui::Begin(imageFilename.c_str(), &showImageViewer, ImGuiWindowFlags_HorizontalScrollbar)) {
+                ImGui::Image((void*)(intptr_t)imageTexture, ImVec2((float)imageWidth, (float)imageHeight));
+            }
+            ImGui::End();
+        }
+
+        //showImageViewer = true;
 
         // Rendering
         ImGui::Render();
         int display_w, display_h;
+
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -106,6 +178,7 @@ int main()
     }
 
     // Cleanup
+    if (imageTexture) glDeleteTextures(1, &imageTexture);
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
