@@ -42,5 +42,5 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(CytoCaricature OpenGL::GL)
 
 # ImGui (via vcpkg)
-find_package(imgui CONFIG REQUIRED)
-target_link_libraries(CytoCaricature imgui::imgui)
+#find_package(imgui CONFIG REQUIRED)
+#target_link_libraries(CytoCaricature imgui::imgui)

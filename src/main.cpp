@@ -20,10 +20,132 @@ using namespace cv;
 int main()
 {
 
-    //IMGUI DEMO IMPL
+    // Initialize GLFW
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW\n";
+        return -1;
+    }
 
-    //IMGUI DEMO IMPL
+    // OpenGL context version (e.g. 3.3)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    // Create a windowed mode window and its OpenGL context
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "CytoCaricature", NULL, NULL);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window\n";
+        glfwTerminate();
+        return -1;
+    }
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1); // Enable vsync
+
+    // Initialize GLAD
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD\n";
+        return -1;
+    }
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+    // Main loop
+    while (!glfwWindowShouldClose(window)) {
+        // Poll and handle events
+        glfwPollEvents();
+
+        // Start ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // Menu Bar
+        if (ImGui::BeginMainMenuBar()) {
+            if (ImGui::BeginMenu("File")) {
+                ImGui::MenuItem("Open", "Ctrl+O");
+                ImGui::MenuItem("Save", "Ctrl+S");
+                ImGui::MenuItem("Exit", "Alt+F4");
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Edit")) {
+                ImGui::MenuItem("Undo", "Ctrl+Z");
+                ImGui::MenuItem("Redo", "Ctrl+Y");
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Help")) {
+                ImGui::MenuItem("About");
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
+        }
+
+        // Rendering
+        ImGui::Render();
+        int display_w, display_h;
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        glfwSwapBuffers(window);
+    }
+
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
+    // ========== CHECK OPENGL VERSION (it is 3.3.0) ==========
+    /**
+    // Initialize GLFW
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW\n";
+        return -1;
+    }
+
+    // Create window and OpenGL context (specify version if you want)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    GLFWwindow* window = glfwCreateWindow(640, 480, "OpenGL Version Check", nullptr, nullptr);
+    if (!window) {
+        std::cerr << "Failed to create GLFW window\n";
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    // Initialize Glad (load OpenGL function pointers)
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+        std::cerr << "Failed to initialize GLAD\n";
+        return -1;
+    }
+
+    // Query OpenGL version
+    const GLubyte* version = glGetString(GL_VERSION);
+    std::cout << "OpenGL Version: " << version << std::endl;
+
+    // Cleanup
+    glfwDestroyWindow(window);
+    glfwTerminate();
+    */
+
+    // ========== CLI VERSION (v1.0.0) ==========
+
+    /**
     const char* filetypes[] = { "*.jpg", "*.png", "*.tif", "*.bmp" };
     const char* image_path = tinyfd_openFileDialog(
         "Select an image",
@@ -145,6 +267,7 @@ int main()
             }
         }
     }
+    */
 
     return 0;
 }
