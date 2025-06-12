@@ -53,7 +53,10 @@ int main()
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsLight();
+
+    // Load Segoe UI at 18pt
+    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 21.0f);
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -73,17 +76,18 @@ int main()
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
                 ImGui::MenuItem("Open", "Ctrl+O");
+                ImGui::MenuItem("Open Directory", "Ctrl+Shift+O");
                 ImGui::MenuItem("Save", "Ctrl+S");
                 ImGui::MenuItem("Exit", "Alt+F4");
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Edit")) {
                 ImGui::MenuItem("Undo", "Ctrl+Z");
-                ImGui::MenuItem("Redo", "Ctrl+Y");
+                ImGui::MenuItem("Redo", "Ctrl+Shift+Z");
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Help")) {
-                ImGui::MenuItem("About");
+                ImGui::MenuItem("README", "Ctrl+H");
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
