@@ -8,10 +8,22 @@
 #include "tinyfiledialogs.h"
 #include "functiondec.h"
 
+// GUI/windowing/rendering
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 using namespace cv;
 
 int main()
 {
+
+    //IMGUI DEMO IMPL
+
+    //IMGUI DEMO IMPL
+
     const char* filetypes[] = { "*.jpg", "*.png", "*.tif", "*.bmp" };
     const char* image_path = tinyfd_openFileDialog(
         "Select an image",
