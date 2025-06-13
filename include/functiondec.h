@@ -74,10 +74,13 @@ cv::Mat showBlueChannelOnly(const cv::Mat& imgOriginal)
 Mat toGrayscale(const Mat& img)
 {
     Mat grayscale = img.clone();
+    Mat gray3ch;
 
-    cvtColor(img, grayscale, COLOR_BGR2GRAY);
+    cvtColor(img, grayscale, COLOR_RGB2GRAY);
+    cvtColor(grayscale, gray3ch, COLOR_GRAY2RGB);  // Make it 3-channel again
+    return gray3ch;
 
-    return grayscale;
+    return gray3ch;
 }
 
 

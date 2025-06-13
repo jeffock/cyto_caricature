@@ -60,11 +60,12 @@ void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
 }
 
 void UpdateTextureFromMat(const cv::Mat& img, GLuint& imageTexture, int& imageWidth, int& imageHeight) {
+    //DEBUG
     if (img.empty() || img.channels() != 3 || img.type() != CV_8UC3) {
         std::cerr << "Invalid image format passed to UpdateTextureFromMat.\n";
         return;
     }
-    
+
     if (imageTexture) glDeleteTextures(1, &imageTexture);
 
     imageWidth = img.cols;
@@ -190,6 +191,12 @@ int main()
             //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
         }
+        // Ctrl+G
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+            currentImage = toGrayscale(currentImage.clone());
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+        }
 
         //static bool showImageViewer = true;
 
@@ -211,16 +218,19 @@ int main()
             }
             if (ImGui::BeginMenu("Image")) {
                 if (ImGui::MenuItem("Isolate Channel", "Ctrl+C")) {
-                    cv::Mat tempBGRimg = originalImage.clone();
+                    //cv::Mat tempBGRimg = originalImage.clone();
                     //cv::imshow("before RGB2BGR", tempBGRimg);
                     //cv::cvtColor(tempBGRimg, tempBGRimg, cv::COLOR_RGB2BGR); 
                     //cv::imshow("after RGB2BGR", tempBGRimg);
-                    currentImage = showBlueChannelOnly(tempBGRimg);
+                    currentImage = showBlueChannelOnly(originalImage.clone());
                     //DebugMatAndTexture(currentImage, "Before BGR2RGB");
                     //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                 }
-                ImGui::MenuItem("Grayscale", "Ctrl+G");
+                if (ImGui::MenuItem("Grayscale", "Ctrl+G")) {
+                    currentImage = toGrayscale(currentImage.clone());
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                }
                 ImGui::MenuItem("Gaussian Blur", "Ctrl+B");
                 ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P");
                 ImGui::EndMenu();
