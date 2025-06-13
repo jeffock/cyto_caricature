@@ -1,10 +1,15 @@
 #include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+
 #include <map>
+#include <string>
 
 #include <iostream>
+#include <windows.h>
+#include <commdlg.h>
 #include "tinyfiledialogs.h"
 #include "functiondec.h"
 
@@ -14,6 +19,8 @@
 #include "imgui_impl_opengl3.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
 
 // Global var :(
 static bool showImageViewer = false;
@@ -40,6 +47,7 @@ void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
             std::cerr << "Failed to load image." << std::endl;
         } else {
             originalImage = img.clone();
+            currentImage = img.clone();
             cv::cvtColor(img, img, cv::COLOR_BGR2RGB); // OpenGL wants RGB
             //std::cout << "Channels: " << img.channels() << std::endl;
             imageWidth = img.cols;
@@ -107,6 +115,24 @@ void DebugMatAndTexture(const cv::Mat& img, const std::string& context = "") {
     std::cout << "----------------------------" << std::endl;
 }
 
+std::string ShowSaveFileDialog(HWND owner = nullptr, const char* filter = "PNG Files\0*.png\0All Files\0*.*\0")
+{
+    char filename[MAX_PATH] = "";
+
+    OPENFILENAME ofn = {};
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = owner;  
+    ofn.lpstrFilter = filter;
+    ofn.lpstrFile = filename;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST;
+    ofn.lpstrDefExt = "png";
+
+    if (GetSaveFileName(&ofn))
+        return std::string(filename);
+    else
+        return "";  // User canceled
+}
 
 int main()
 {
@@ -170,6 +196,7 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // ----------- KEYBINDS -----------//
         // Ctrl+O
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
@@ -178,6 +205,21 @@ int main()
         if (openRequested) {
             openRequested = false;
             OpenImage(imageTexture, imageWidth, imageHeight);
+        }
+        // Ctrl+S
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+            HWND hwnd = glfwGetWin32Window(window); 
+            std::string path = ShowSaveFileDialog(hwnd);
+
+            if (!path.empty() && !currentImage.empty()) {
+                cv::Mat currentImageSave = currentImage.clone();
+                cv::cvtColor(currentImageSave, currentImageSave, cv::COLOR_RGB2BGR);
+                bool success = cv::imwrite(path, currentImageSave);
+                if (!success) {
+                    std::cerr << "Failed to save image to " << path << "\n";
+                }
+            }
         }
         // Ctrl+C
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
@@ -200,15 +242,29 @@ int main()
 
         //static bool showImageViewer = true;
 
-        // Menu Bar
+        // ----------- MENU ITEMS -----------//
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
                 if (ImGui::MenuItem("Open", "Ctrl+O")) {
                     OpenImage(imageTexture, imageWidth, imageHeight);
                 }
                 ImGui::MenuItem("Open Directory", "TODO");
-                ImGui::MenuItem("Save", "TODO");
-                ImGui::MenuItem("Exit", "TODO");
+                if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                        HWND hwnd = glfwGetWin32Window(window); 
+                        std::string path = ShowSaveFileDialog(hwnd);
+
+                        if (!path.empty() && !currentImage.empty()) {
+                            cv::Mat currentImageSave = currentImage.clone();
+                            cv::cvtColor(currentImageSave, currentImageSave, cv::COLOR_RGB2BGR);
+                            bool success = cv::imwrite(path, currentImageSave);
+                            if (!success) {
+                                std::cerr << "Failed to save image to " << path << "\n";
+                            }
+                        }
+                }
+                if (ImGui::MenuItem("Exit", "Alt+F4")) {
+                    glfwSetWindowShouldClose(window, GLFW_TRUE);
+                }
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Edit")) {
