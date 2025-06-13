@@ -15,11 +15,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-using namespace cv;
-
 // Global var :(
 static bool showImageViewer = false;
 std::string imageFilename;
+cv::Mat originalImage;
+cv::Mat currentImage;
 
 void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
     const char* filter_patterns[] = { "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.tif", "*.tiff" };
@@ -39,7 +39,9 @@ void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
         if (img.empty()) {
             std::cerr << "Failed to load image." << std::endl;
         } else {
+            originalImage = img.clone();
             cv::cvtColor(img, img, cv::COLOR_BGR2RGB); // OpenGL wants RGB
+            //std::cout << "Channels: " << img.channels() << std::endl;
             imageWidth = img.cols;
             imageHeight = img.rows;
 
@@ -56,6 +58,54 @@ void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
         }
     }
 }
+
+void UpdateTextureFromMat(const cv::Mat& img, GLuint& imageTexture, int& imageWidth, int& imageHeight) {
+    if (img.empty() || img.channels() != 3 || img.type() != CV_8UC3) {
+        std::cerr << "Invalid image format passed to UpdateTextureFromMat.\n";
+        return;
+    }
+    
+    if (imageTexture) glDeleteTextures(1, &imageTexture);
+
+    imageWidth = img.cols;
+    imageHeight = img.rows;
+
+    glGenTextures(1, &imageTexture);
+    glBindTexture(GL_TEXTURE_2D, imageTexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imageWidth, imageHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, img.data);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void DebugMatAndTexture(const cv::Mat& img, const std::string& context = "") {
+    std::cout << "---- DebugMatAndTexture ----" << std::endl;
+    if (!context.empty()) {
+        std::cout << "Context: " << context << std::endl;
+    }
+
+    if (img.empty()) {
+        std::cout << "Image is empty!" << std::endl;
+        return;
+    }
+
+    std::cout << "Image size: " << img.cols << " x " << img.rows << std::endl;
+    std::cout << "Channels: " << img.channels() << std::endl;
+    std::cout << "Type: " << img.type() << std::endl;
+
+    double minVal, maxVal;
+    cv::minMaxLoc(img, &minVal, &maxVal);
+    std::cout << "Min pixel value: " << minVal << ", Max pixel value: " << maxVal << std::endl;
+
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+        std::cerr << "OpenGL Error after texture upload: 0x" << std::hex << err << std::dec << std::endl;
+    }
+
+    std::cout << "----------------------------" << std::endl;
+}
+
 
 int main()
 {
@@ -128,6 +178,18 @@ int main()
             openRequested = false;
             OpenImage(imageTexture, imageWidth, imageHeight);
         }
+        // Ctrl+C
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+            cv::Mat tempBGRimg = originalImage.clone();
+            //cv::imshow("before RGB2BGR", tempBGRimg);
+            //cv::cvtColor(tempBGRimg, tempBGRimg, cv::COLOR_RGB2BGR); 
+            //cv::imshow("after RGB2BGR", tempBGRimg);
+            currentImage = showBlueChannelOnly(tempBGRimg);
+            //DebugMatAndTexture(currentImage, "Before BGR2RGB");
+            //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+        }
 
         //static bool showImageViewer = true;
 
@@ -137,18 +199,41 @@ int main()
                 if (ImGui::MenuItem("Open", "Ctrl+O")) {
                     OpenImage(imageTexture, imageWidth, imageHeight);
                 }
-                ImGui::MenuItem("Open Directory", "Ctrl+Shift+O");
-                ImGui::MenuItem("Save", "Ctrl+S");
-                ImGui::MenuItem("Exit", "Alt+F4");
+                ImGui::MenuItem("Open Directory", "TODO");
+                ImGui::MenuItem("Save", "TODO");
+                ImGui::MenuItem("Exit", "TODO");
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Edit")) {
-                ImGui::MenuItem("Undo", "Ctrl+Z");
-                ImGui::MenuItem("Redo", "Ctrl+Shift+Z");
+                ImGui::MenuItem("Undo", "TODO");
+                ImGui::MenuItem("Redo", "TODO");
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Image")) {
+                if (ImGui::MenuItem("Isolate Channel", "Ctrl+C")) {
+                    cv::Mat tempBGRimg = originalImage.clone();
+                    //cv::imshow("before RGB2BGR", tempBGRimg);
+                    //cv::cvtColor(tempBGRimg, tempBGRimg, cv::COLOR_RGB2BGR); 
+                    //cv::imshow("after RGB2BGR", tempBGRimg);
+                    currentImage = showBlueChannelOnly(tempBGRimg);
+                    //DebugMatAndTexture(currentImage, "Before BGR2RGB");
+                    //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                }
+                ImGui::MenuItem("Grayscale", "Ctrl+G");
+                ImGui::MenuItem("Gaussian Blur", "Ctrl+B");
+                ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P");
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Analyze")) {
+                ImGui::MenuItem("Object Count (Watershed only)", "Ctrl+W");
+                ImGui::MenuItem("Object Count (pre-processing & Watershed)", "Ctrl+1");
+                ImGui::MenuItem("NSI Summary", "Ctrl+N");
+                ImGui::MenuItem("NSI Heatmap", "Ctrl+H");
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Help")) {
-                ImGui::MenuItem("README", "Ctrl+H");
+                ImGui::MenuItem("README", "TODO");
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();

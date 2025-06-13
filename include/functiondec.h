@@ -11,18 +11,63 @@
 
 using namespace cv;
 
-Mat showBlueChannelOnly(const Mat& img)
+cv::Mat showBlueChannelOnly(const cv::Mat& imgOriginal)
 {
-    Mat blueOnly = img.clone();
+    // BGR
 
-    std::vector<Mat> channels(3);
-    split(blueOnly, channels);
+    cv::Mat img = imgOriginal.clone();
+    //cv::Mat img8bit;
 
-    channels[1] = Mat::zeros(channels[1].size(), channels[1].type()); // Zero Green
-    channels[2] = Mat::zeros(channels[2].size(), channels[2].type()); // Zero Red
+    /**
+    // DEBUG & convert 16bit to 8bit
+    std::cout << "img.depth(): " << img.depth() << std::endl;
+    std::cout << "CV_8U: " << CV_8U << ", CV_16U: " << CV_16U << std::endl;
+    std::cout << "Original img type: " << img.type() << std::endl; // Expect CV_8UC3 (type 16)
+    if (img.depth() != CV_8U) {
+        std::cout << "Convert from 16->8bit" << std::endl;
+        img8bit = img / 257; // Normalize 16-bit to 8-bit
+    } else {
+        img8bit = img.clone();
+    }
+    std::cout << "Original img type: " << img8bit.type() << std::endl; // Expect CV_8UC3 (type 16)
+    */
 
-    merge(channels, blueOnly);
+    //cv::imshow("img", img);
+
+    std::vector<cv::Mat> channels(3);
+    cv::split(img, channels);  // B, G, R
+
+    //DEBUG
+    //double minVal, maxVal;
+    //cv::minMaxLoc(channels[0], &minVal, &maxVal);
+    //std::cout << "Blue channel stats: min=" << minVal << ", max=" << maxVal << std::endl;
+
+    channels[1] = cv::Mat::zeros(channels[1].size(), channels[1].type()); // Zero G
+    channels[2] = cv::Mat::zeros(channels[2].size(), channels[2].type()); // Zero R
+
+    cv::Mat blueOnly;
+    cv::merge(channels, blueOnly);
+
+    //cv::imshow("Non-OpenGL", blueOnly);
+
+    cv::cvtColor(blueOnly, blueOnly, cv::COLOR_BGR2RGB); // Convert for OpenGL
+
     return blueOnly;
+    
+
+    // RGB
+    /**
+    std::vector<cv::Mat> channels(3);
+    cv::split(img, channels);
+
+    // Zero out red and green (channels 0 and 1)
+    channels[0] = cv::Mat::zeros(channels[0].size(), channels[0].type()); // Red
+    channels[1] = cv::Mat::zeros(channels[1].size(), channels[1].type()); // Green
+
+    cv::Mat blueOnly;
+    cv::merge(channels, blueOnly);
+    return blueOnly;
+    */
 }
 
 
