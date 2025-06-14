@@ -89,6 +89,7 @@ Mat gaussianFilter(const Mat& img)
     Mat blurredImg = img.clone();
 
     GaussianBlur(img, blurredImg, Size(0, 0), 3.0);
+    cv::cvtColor(blurredImg, blurredImg, cv::COLOR_BGR2RGB); // Convert for OpenGL
 
     return blurredImg;
 }

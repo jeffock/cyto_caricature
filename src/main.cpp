@@ -239,6 +239,11 @@ int main()
             currentImage = toGrayscale(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
         }
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+            currentImage = gaussianFilter(currentImage.clone());
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+        }
 
         //static bool showImageViewer = true;
 
@@ -287,7 +292,10 @@ int main()
                     currentImage = toGrayscale(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                 }
-                ImGui::MenuItem("Gaussian Blur", "Ctrl+B");
+                if (ImGui::MenuItem("Gaussian Blur", "Ctrl+B")) {
+                    currentImage = gaussianFilter(currentImage.clone());
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                }
                 ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P");
                 ImGui::EndMenu();
             }
