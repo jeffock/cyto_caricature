@@ -69,10 +69,12 @@ void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
 
 void UpdateTextureFromMat(const cv::Mat& img, GLuint& imageTexture, int& imageWidth, int& imageHeight) {
     //DEBUG
+    /**
     if (img.empty() || img.channels() != 3 || img.type() != CV_8UC3) {
         std::cerr << "Invalid image format passed to UpdateTextureFromMat.\n";
         return;
     }
+    */
 
     if (imageTexture) glDeleteTextures(1, &imageTexture);
 
@@ -239,9 +241,16 @@ int main()
             currentImage = toGrayscale(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
         }
+        // Ctrl+B
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
             currentImage = gaussianFilter(currentImage.clone());
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+        }
+        // Ctrl+P
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+            currentImage = intensityThreshold(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
         }
 
@@ -296,7 +305,10 @@ int main()
                     currentImage = gaussianFilter(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                 }
-                ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P");
+                if (ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P")) {
+                    currentImage = intensityThreshold(currentImage.clone());
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                }
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Analyze")) {

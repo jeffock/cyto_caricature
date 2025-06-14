@@ -96,7 +96,7 @@ Mat gaussianFilter(const Mat& img)
 
 Mat intensityThreshold(const Mat& img)
 {
-    Mat gray, binary;
+    Mat gray, binary, binary3ch;
 
     if (img.channels() == 3)
         cvtColor(img, gray, COLOR_BGR2GRAY);
@@ -105,7 +105,8 @@ Mat intensityThreshold(const Mat& img)
 
     threshold(gray, binary, 0, 255, THRESH_BINARY | THRESH_OTSU);
 
-    return binary;
+    cvtColor(binary, binary3ch, COLOR_GRAY2RGB);  // Make it 3-channel again
+    return binary3ch;
 }
 
 struct WatershedOutput {
