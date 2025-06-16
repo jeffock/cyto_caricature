@@ -115,9 +115,13 @@ struct WatershedOutput {
     cv::Mat markers;
 };
 
-WatershedOutput runWatershed(const cv::Mat& img) 
+WatershedOutput runWatershed(const cv::Mat& originalImg) 
 {
     using namespace cv;
+
+    Mat img = originalImg.clone();
+    cvtColor(img, img, COLOR_RGB2GRAY);
+
     // Noise removal with morphological opening
     Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
     Mat opening;
@@ -176,6 +180,8 @@ WatershedOutput runWatershed(const cv::Mat& img)
             }
         }
     }
+
+    cvtColor(output, output, COLOR_BGR2RGB);
 
     return { output, count, markers };
 }

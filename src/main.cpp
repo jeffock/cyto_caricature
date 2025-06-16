@@ -24,9 +24,18 @@
 
 // Global var :(
 static bool showImageViewer = false;
+static bool showPrereqPopup = false;
+static std::string latestMessage = "";
+static bool showObjectCntPopup = false;
 std::string imageFilename;
-cv::Mat originalImage;
-cv::Mat currentImage;
+cv::Mat originalImage, currentImage;
+bool singleChannel = false;
+bool isGrayscale = false;
+bool isBinary = false;
+bool cellsSegmented = false;
+
+// TODO
+// - implement 1 previous/next "edit" counter for Ctrl+Z
 
 void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
     const char* filter_patterns[] = { "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.tif", "*.tiff" };
@@ -185,6 +194,8 @@ int main()
     int imageWidth = 0;
     int imageHeight = 0;
 
+    int objectCount = 0;
+
     // Bools for GetKey
     bool openRequested = false;
 
@@ -234,24 +245,61 @@ int main()
             //DebugMatAndTexture(currentImage, "Before BGR2RGB");
             //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            singleChannel = true;
         }
         // Ctrl+G
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
             currentImage = toGrayscale(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            isGrayscale = true;
         }
         // Ctrl+B
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
             currentImage = gaussianFilter(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            //isBlurred = true;
         }
         // Ctrl+P
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
             currentImage = intensityThreshold(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            isBinary = true;
+        }
+        // Ctrl+W
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+            if (singleChannel && isGrayscale && isBinary) {
+                WatershedOutput watershedOut = runWatershed(currentImage); 
+                currentImage = watershedOut.watershedOutImg;
+                objectCount = watershedOut.count;
+                //imshow("Display window", currentImage);
+                UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                //std::cout << objectCount << std::endl;
+                cellsSegmented = true;
+                showObjectCntPopup = true;
+            } 
+            else {
+                showPrereqPopup = true;
+            }
+        }
+        // Ctrl+1
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+            currentImage = showBlueChannelOnly(currentImage);
+            currentImage = toGrayscale(currentImage);
+            currentImage = gaussianFilter(currentImage);
+            currentImage = intensityThreshold(currentImage);
+            
+            WatershedOutput watershedOut = runWatershed(currentImage); 
+            currentImage = watershedOut.watershedOutImg;
+            objectCount = watershedOut.count;
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            //std::cout << objectCount << std::endl;
+            cellsSegmented = true;
+            showObjectCntPopup = true;
         }
 
         //static bool showImageViewer = true;
@@ -296,24 +344,55 @@ int main()
                     //DebugMatAndTexture(currentImage, "Before BGR2RGB");
                     //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    singleChannel = true;
                 }
                 if (ImGui::MenuItem("Grayscale", "Ctrl+G")) {
                     currentImage = toGrayscale(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    isGrayscale = true;
                 }
                 if (ImGui::MenuItem("Gaussian Blur", "Ctrl+B")) {
                     currentImage = gaussianFilter(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    //isBlurred = true;
                 }
                 if (ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P")) {
                     currentImage = intensityThreshold(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    isBinary = true;
                 }
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Analyze")) {
-                ImGui::MenuItem("Object Count (Watershed only)", "Ctrl+W");
-                ImGui::MenuItem("Object Count (pre-processing & Watershed)", "Ctrl+1");
+                if (ImGui::MenuItem("Object Count (Watershed only)", "Ctrl+W")) {
+                    if (singleChannel && isGrayscale && isBinary) {
+                        WatershedOutput watershedOut = runWatershed(currentImage); 
+                        currentImage = watershedOut.watershedOutImg;
+                        objectCount = watershedOut.count;
+                        //imshow("Display window", currentImage);
+                        UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                        //std::cout << objectCount << std::endl;
+                        cellsSegmented = true;
+                        showObjectCntPopup = true;
+                    } 
+                    else {
+                        showPrereqPopup = true;
+                    }
+                }
+                if (ImGui::MenuItem("Object Count (pre-processing & Watershed)", "Ctrl+1")) {
+                    currentImage = showBlueChannelOnly(currentImage);
+                    currentImage = toGrayscale(currentImage);
+                    currentImage = gaussianFilter(currentImage);
+                    currentImage = intensityThreshold(currentImage);
+                    
+                    WatershedOutput watershedOut = runWatershed(currentImage); 
+                    currentImage = watershedOut.watershedOutImg;
+                    objectCount = watershedOut.count;
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    //std::cout << objectCount << std::endl;
+                    cellsSegmented = true;
+                    showObjectCntPopup = true;
+                }
                 ImGui::MenuItem("NSI Summary", "Ctrl+N");
                 ImGui::MenuItem("NSI Heatmap", "Ctrl+H");
                 ImGui::EndMenu();
@@ -326,11 +405,45 @@ int main()
         
         }
 
+        // for Ctrl+W
+        if (showPrereqPopup) {
+            ImGui::OpenPopup("Preprocessing Required");
+            showPrereqPopup = false;
+        } 
+        if (!showPrereqPopup && showObjectCntPopup) {
+            ImGui::OpenPopup("Object Count");
+            showObjectCntPopup = false;
+        }
+
+        if (ImGui::BeginPopupModal("Preprocessing Required", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("Run the pre-requisite processing first.");
+            if (ImGui::Button("OK")) {
+                ImGui::CloseCurrentPopup();
+                showPrereqPopup = false;
+            }
+            ImGui::EndPopup();
+        }
+        if (ImGui::BeginPopupModal("Object Count", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("Object count: %d", objectCount);
+            if (ImGui::Button("OK")) {
+                ImGui::CloseCurrentPopup();
+                showObjectCntPopup = false;
+            }
+            ImGui::EndPopup();
+        }
+
         if (showImageViewer) {
             if (ImGui::Begin(imageFilename.c_str(), &showImageViewer, ImGuiWindowFlags_HorizontalScrollbar)) {
                 ImGui::Image((void*)(intptr_t)imageTexture, ImVec2((float)imageWidth, (float)imageHeight));
             }
             ImGui::End();
+
+            if (!showImageViewer) {
+                singleChannel = false;
+                isGrayscale = false;
+                isBinary = false;
+                cellsSegmented = false;
+            }
         }
 
         //showImageViewer = true;
