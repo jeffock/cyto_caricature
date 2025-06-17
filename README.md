@@ -2,7 +2,7 @@ v2.1.0 WIP
 
 ---
 
-# CytoCaricature:
+# CytoCaricature
 
 **CytoCaricature** is a passion project of mine initially made to assist in my fairly specific needs within my research. It deals specifically with cell analysis but can apply to other images if needed. 
 
@@ -15,7 +15,7 @@ The usable (not-yet-stable-the-code-is-messy) binaries can be found in [Releases
 - Documentation (WIP)
 - etc.
 
-# Program Information:
+# Program Information
 
 ## Dependencies/Libraries:
 
