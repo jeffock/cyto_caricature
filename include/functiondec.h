@@ -186,8 +186,10 @@ WatershedOutput runWatershed(const cv::Mat& originalImg)
     return { output, count, markers };
 }
 
-std::vector<double> calculateNSI(const cv::Mat& markers) {
+std::vector<double> calculateNSI(const cv::Mat& markersArg) {
     using namespace cv;
+
+    Mat markers = markersArg.clone();
 
     std::vector<double> nsis;
 

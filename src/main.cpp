@@ -27,6 +27,10 @@ static bool showImageViewer = false;
 static bool showPrereqPopup = false;
 static std::string latestMessage = "";
 static bool showObjectCntPopup = false;
+static bool showNSIEmptyPopup = false;
+static bool showNSISummaryPopup = false;
+WatershedOutput watershedOut;
+double avgNSI = 0.0;
 std::string imageFilename;
 cv::Mat originalImage, currentImage;
 bool singleChannel = false;
@@ -293,13 +297,30 @@ int main()
             currentImage = gaussianFilter(currentImage);
             currentImage = intensityThreshold(currentImage);
             
-            WatershedOutput watershedOut = runWatershed(currentImage); 
+            watershedOut = runWatershed(currentImage); 
             currentImage = watershedOut.watershedOutImg;
             objectCount = watershedOut.count;
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
             //std::cout << objectCount << std::endl;
             cellsSegmented = true;
             showObjectCntPopup = true;
+        }
+        // Ctrl+N
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
+            std::vector<double> nsis = calculateNSI(watershedOut.markers);
+
+            if (nsis.empty()) {
+                showNSIEmptyPopup = true;
+            } else {
+                double sum = 0.0;
+                for (double nsi : nsis) {
+                    sum += nsi;
+                }
+                avgNSI = sum / nsis.size();
+
+                showNSISummaryPopup = true;
+            }
         }
 
         //static bool showImageViewer = true;
@@ -366,7 +387,7 @@ int main()
             if (ImGui::BeginMenu("Analyze")) {
                 if (ImGui::MenuItem("Object Count (Watershed only)", "Ctrl+W")) {
                     if (singleChannel && isGrayscale && isBinary) {
-                        WatershedOutput watershedOut = runWatershed(currentImage); 
+                        watershedOut = runWatershed(currentImage); 
                         currentImage = watershedOut.watershedOutImg;
                         objectCount = watershedOut.count;
                         //imshow("Display window", currentImage);
@@ -393,7 +414,21 @@ int main()
                     cellsSegmented = true;
                     showObjectCntPopup = true;
                 }
-                ImGui::MenuItem("NSI Summary", "Ctrl+N");
+                if (ImGui::MenuItem("NSI Summary", "Ctrl+N")) {
+                    std::vector<double> nsis = calculateNSI(watershedOut.markers);
+
+                    if (nsis.empty()) {
+                        showNSIEmptyPopup = true;
+                    } else {
+                        double sum = 0.0;
+                        for (double nsi : nsis) {
+                            sum += nsi;
+                        }
+                        avgNSI = sum / nsis.size();
+
+                        showNSISummaryPopup = true;
+                    }
+                }
                 ImGui::MenuItem("NSI Heatmap", "Ctrl+H");
                 ImGui::EndMenu();
             }
@@ -414,7 +449,6 @@ int main()
             ImGui::OpenPopup("Object Count");
             showObjectCntPopup = false;
         }
-
         if (ImGui::BeginPopupModal("Preprocessing Required", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("Run the pre-requisite processing first.");
             if (ImGui::Button("OK")) {
@@ -425,6 +459,31 @@ int main()
         }
         if (ImGui::BeginPopupModal("Object Count", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
             ImGui::Text("Object count: %d", objectCount);
+            if (ImGui::Button("OK")) {
+                ImGui::CloseCurrentPopup();
+                showObjectCntPopup = false;
+            }
+            ImGui::EndPopup();
+        }
+        // for Ctrl+N
+        if (showNSIEmptyPopup) {
+            ImGui::OpenPopup("Objects Un-Segmented");
+            showNSIEmptyPopup = false;
+        } 
+        if (!showNSIEmptyPopup && showNSISummaryPopup) {
+            ImGui::OpenPopup("NSI Summary");
+            showNSISummaryPopup = false;
+        }
+        if (ImGui::BeginPopupModal("Objects Un-Segmented", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("No nuclei/objects found so NSI cannot be calculated.");
+            if (ImGui::Button("OK")) {
+                ImGui::CloseCurrentPopup();
+                showNSIEmptyPopup = false;
+            }
+            ImGui::EndPopup();
+        }
+        if (ImGui::BeginPopupModal("NSI Summary", NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::Text("Average NSI: %.4f", avgNSI);
             if (ImGui::Button("OK")) {
                 ImGui::CloseCurrentPopup();
                 showObjectCntPopup = false;
