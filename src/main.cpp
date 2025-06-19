@@ -29,6 +29,7 @@ static std::string latestMessage = "";
 static bool showObjectCntPopup = false;
 static bool showNSIEmptyPopup = false;
 static bool showNSISummaryPopup = false;
+std::vector<double> nsis;
 WatershedOutput watershedOut;
 double avgNSI = 0.0;
 std::string imageFilename;
@@ -308,7 +309,7 @@ int main()
         // Ctrl+N
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
-            std::vector<double> nsis = calculateNSI(watershedOut.markers);
+            nsis = calculateNSI(watershedOut.markers);
 
             if (nsis.empty()) {
                 showNSIEmptyPopup = true;
@@ -321,6 +322,12 @@ int main()
 
                 showNSISummaryPopup = true;
             }
+        }
+        // Ctrl+H
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+            cv::Mat NSIheatmap = createNSIHeatmap(watershedOut.markers, nsis);
+            UpdateTextureFromMat(NSIheatmap, imageTexture, imageWidth, imageHeight);
         }
 
         //static bool showImageViewer = true;
@@ -415,7 +422,7 @@ int main()
                     showObjectCntPopup = true;
                 }
                 if (ImGui::MenuItem("NSI Summary", "Ctrl+N")) {
-                    std::vector<double> nsis = calculateNSI(watershedOut.markers);
+                    nsis = calculateNSI(watershedOut.markers);
 
                     if (nsis.empty()) {
                         showNSIEmptyPopup = true;
@@ -429,7 +436,10 @@ int main()
                         showNSISummaryPopup = true;
                     }
                 }
-                ImGui::MenuItem("NSI Heatmap", "Ctrl+H");
+                if (ImGui::MenuItem("NSI Heatmap", "Ctrl+H")) {
+                    cv::Mat NSIheatmap = createNSIHeatmap(watershedOut.markers, nsis);
+                    UpdateTextureFromMat(NSIheatmap, imageTexture, imageWidth, imageHeight);
+                }
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Help")) {
