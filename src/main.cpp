@@ -5,6 +5,7 @@
 #include <opencv2/highgui.hpp>
 
 #include <map>
+#include <stack>
 #include <string>
 
 #include <iostream>
@@ -23,21 +24,26 @@
 #include <GLFW/glfw3native.h>
 
 // Global var :(
+// popups
 static bool showImageViewer = false;
 static bool showPrereqPopup = false;
 static std::string latestMessage = "";
 static bool showObjectCntPopup = false;
 static bool showNSIEmptyPopup = false;
 static bool showNSISummaryPopup = false;
+// image processing
 std::vector<double> nsis;
 WatershedOutput watershedOut;
 double avgNSI = 0.0;
 std::string imageFilename;
-cv::Mat originalImage, currentImage;
+cv::Mat originalImage, currentImage, previousImage, nextImage;
 bool singleChannel = false;
 bool isGrayscale = false;
 bool isBinary = false;
 bool cellsSegmented = false;
+// misc. features
+std::stack<cv::Mat> undoStack;
+std::stack<cv::Mat> redoStack;
 
 // TODO
 // - implement 1 previous/next "edit" counter for Ctrl+Z
@@ -214,7 +220,10 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // --------------------------------//
         // ----------- KEYBINDS -----------//
+        // --------------------------------//
+
         // Ctrl+O
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
@@ -239,6 +248,32 @@ int main()
                 }
             }
         }
+        // Ctrl+Z
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS &&
+            !(glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)) {
+
+            if (!undoStack.empty()) {
+                redoStack.push(currentImage.clone());
+                currentImage = undoStack.top();
+                undoStack.pop();
+                cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
+                UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            }
+        }
+        // Ctrl+Shift+Z
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+
+            if (!redoStack.empty()) {
+                undoStack.push(currentImage.clone());
+                currentImage = redoStack.top();
+                redoStack.pop();
+                //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
+                UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            }
+        }
         // Ctrl+C
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
@@ -246,6 +281,9 @@ int main()
             //cv::imshow("before RGB2BGR", tempBGRimg);
             //cv::cvtColor(tempBGRimg, tempBGRimg, cv::COLOR_RGB2BGR); 
             //cv::imshow("after RGB2BGR", tempBGRimg);
+            //previousImage = currentImage.clone();
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop(); // Clear redo history
             currentImage = showBlueChannelOnly(tempBGRimg);
             //DebugMatAndTexture(currentImage, "Before BGR2RGB");
             //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
@@ -255,6 +293,9 @@ int main()
         // Ctrl+G
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+            //previousImage = currentImage.clone();
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
             currentImage = toGrayscale(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
             isGrayscale = true;
@@ -262,6 +303,9 @@ int main()
         // Ctrl+B
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+            //previousImage = currentImage.clone();
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
             currentImage = gaussianFilter(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
             //isBlurred = true;
@@ -269,6 +313,9 @@ int main()
         // Ctrl+P
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+            //previousImage = currentImage.clone();
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
             currentImage = intensityThreshold(currentImage.clone());
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
             isBinary = true;
@@ -278,6 +325,9 @@ int main()
             glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             if (singleChannel && isGrayscale && isBinary) {
                 WatershedOutput watershedOut = runWatershed(currentImage); 
+                //previousImage = currentImage.clone();
+                undoStack.push(currentImage.clone());
+                while (!redoStack.empty()) redoStack.pop();
                 currentImage = watershedOut.watershedOutImg;
                 objectCount = watershedOut.count;
                 //imshow("Display window", currentImage);
@@ -293,6 +343,10 @@ int main()
         // Ctrl+1
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS) {
+            //previousImage = currentImage.clone();
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
+
             currentImage = showBlueChannelOnly(currentImage);
             currentImage = toGrayscale(currentImage);
             currentImage = gaussianFilter(currentImage);
@@ -327,12 +381,19 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
             cv::Mat NSIheatmap = createNSIHeatmap(watershedOut.markers, nsis);
-            UpdateTextureFromMat(NSIheatmap, imageTexture, imageWidth, imageHeight);
+            //previousImage = currentImage.clone();
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
+            currentImage = NSIheatmap.clone();
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
         }
 
         //static bool showImageViewer = true;
 
-        // ----------- MENU ITEMS -----------//
+        // ---------------------------------- //
+        // ----------- MENU ITEMS ----------- //
+        // ---------------------------------- //
+
         if (ImGui::BeginMainMenuBar()) {
             if (ImGui::BeginMenu("File")) {
                 if (ImGui::MenuItem("Open", "Ctrl+O")) {
@@ -358,8 +419,30 @@ int main()
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Edit")) {
-                ImGui::MenuItem("Undo", "TODO");
-                ImGui::MenuItem("Redo", "TODO");
+                if (ImGui::MenuItem("Undo", "Ctrl+Z")) {
+                    //nextImage = currentImage.clone();
+                    //currentImage = previousImage.clone();
+                    //UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    if (!undoStack.empty()) {
+                        redoStack.push(currentImage.clone());
+                        currentImage = undoStack.top();
+                        undoStack.pop();
+                        cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
+                        UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    }
+                }
+                if (ImGui::MenuItem("Redo", "Ctrl+Shift+Z")) {
+                    //previousImage = currentImage.clone();
+                    //currentImage = nextImage.clone();
+                    //UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    if (!redoStack.empty()) {
+                        undoStack.push(currentImage.clone());
+                        currentImage = redoStack.top();
+                        redoStack.pop();
+                        //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
+                        UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    }
+                }
                 ImGui::EndMenu();
             }
             if (ImGui::BeginMenu("Image")) {
@@ -368,6 +451,9 @@ int main()
                     //cv::imshow("before RGB2BGR", tempBGRimg);
                     //cv::cvtColor(tempBGRimg, tempBGRimg, cv::COLOR_RGB2BGR); 
                     //cv::imshow("after RGB2BGR", tempBGRimg);
+                    //previousImage = currentImage.clone();
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
                     currentImage = showBlueChannelOnly(originalImage.clone());
                     //DebugMatAndTexture(currentImage, "Before BGR2RGB");
                     //cv::cvtColor(currentImage, currentImage, cv::COLOR_BGR2RGB);
@@ -375,16 +461,25 @@ int main()
                     singleChannel = true;
                 }
                 if (ImGui::MenuItem("Grayscale", "Ctrl+G")) {
+                    //previousImage = currentImage.clone();
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
                     currentImage = toGrayscale(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                     isGrayscale = true;
                 }
                 if (ImGui::MenuItem("Gaussian Blur", "Ctrl+B")) {
+                    //previousImage = currentImage.clone();
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
                     currentImage = gaussianFilter(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                     //isBlurred = true;
                 }
                 if (ImGui::MenuItem("Threshold Pixel Intensity", "Ctrl+P")) {
+                    //previousImage = currentImage.clone();
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
                     currentImage = intensityThreshold(currentImage.clone());
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                     isBinary = true;
@@ -395,6 +490,9 @@ int main()
                 if (ImGui::MenuItem("Object Count (Watershed only)", "Ctrl+W")) {
                     if (singleChannel && isGrayscale && isBinary) {
                         watershedOut = runWatershed(currentImage); 
+                        //previousImage = currentImage.clone();
+                        undoStack.push(currentImage.clone());
+                        while (!redoStack.empty()) redoStack.pop();
                         currentImage = watershedOut.watershedOutImg;
                         objectCount = watershedOut.count;
                         //imshow("Display window", currentImage);
@@ -408,6 +506,10 @@ int main()
                     }
                 }
                 if (ImGui::MenuItem("Object Count (pre-processing & Watershed)", "Ctrl+1")) {
+                    //previousImage = currentImage.clone();
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
+                    
                     currentImage = showBlueChannelOnly(currentImage);
                     currentImage = toGrayscale(currentImage);
                     currentImage = gaussianFilter(currentImage);
@@ -438,7 +540,11 @@ int main()
                 }
                 if (ImGui::MenuItem("NSI Heatmap", "Ctrl+H")) {
                     cv::Mat NSIheatmap = createNSIHeatmap(watershedOut.markers, nsis);
-                    UpdateTextureFromMat(NSIheatmap, imageTexture, imageWidth, imageHeight);
+                    //previousImage = currentImage.clone();
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
+                    currentImage = NSIheatmap.clone();
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
                 }
                 ImGui::EndMenu();
             }
