@@ -115,6 +115,8 @@ struct WatershedOutput {
     cv::Mat markers;
 };
 
+// TODO ===========================
+// improve watershed(img, markers);
 WatershedOutput runWatershed(const cv::Mat& originalImg) 
 {
     using namespace cv;
