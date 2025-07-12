@@ -6,10 +6,14 @@
 #include <set>
 #include <algorithm>
 #include <vector>
-
 #include <iostream>
 
 using namespace cv;
+
+
+// ---------------------------------- //
+// --------- PRE-PROCESSING --------- //
+// ---------------------------------- //
 
 cv::Mat showBlueChannelOnly(const cv::Mat& imgOriginal)
 {
@@ -94,6 +98,7 @@ Mat gaussianFilter(const Mat& img)
     return blurredImg;
 }
 
+
 Mat intensityThreshold(const Mat& img)
 {
     Mat gray, binary, binary3ch;
@@ -109,14 +114,23 @@ Mat intensityThreshold(const Mat& img)
     return binary3ch;
 }
 
+// ---------------------------------- //
+// -------- ^PRE-PROCESSING^ -------- //
+// ---------------------------------- //
+
+
+
+
+// ---------------------------------- //
+// ----------- WATERSHED ------------ //
+// ---------------------------------- //
+
 struct WatershedOutput {
     cv::Mat watershedOutImg;
     int count;
     cv::Mat markers;
 };
 
-// TODO ===========================
-// improve watershed(img, markers);
 WatershedOutput runWatershed(const cv::Mat& originalImg) 
 {
     using namespace cv;
@@ -187,6 +201,155 @@ WatershedOutput runWatershed(const cv::Mat& originalImg)
 
     return { output, count, markers };
 }
+
+
+WatershedOutput runCustomWatershed(const cv::Mat& originalImg) 
+{
+    using namespace cv;
+    
+    Mat grayImg;
+    cvtColor(originalImg, grayImg, COLOR_RGB2GRAY);
+
+
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3));
+    cv::Mat opening;
+    morphologyEx(grayImg, opening, MORPH_OPEN, kernel, Point(-1, -1), 2);
+
+
+    int dilationNum = 0;
+    Mat sureBg;
+    dilate(opening, sureBg, kernel, Point(-1,-1), dilationNum);
+
+
+    Mat distTransform;
+    int distType = DIST_L2;
+    int maskSize = 5;
+    distanceTransform(opening, distTransform, distType, maskSize);
+    
+    Mat sureFg;
+    double maxDistance = 0.0;
+    minMaxLoc(distTransform, nullptr, &maxDistance);
+
+    double thresholdFraction = 0.1;
+    double thresholdValue = thresholdFraction * maxDistance;
+    double maxBinaryValue = 255.0;
+    threshold(distTransform, sureFg, thresholdValue, maxBinaryValue, THRESH_BINARY);
+
+    sureFg.convertTo(sureFg, CV_8U);
+
+
+    Mat unknown;
+    subtract(sureBg, sureFg, unknown);
+
+
+    Mat markers;
+    connectedComponents(sureFg, markers);
+    markers += 1; // make background 1 instead of 0
+    markers.setTo(0, unknown);
+
+
+
+    // Initialize visited map and BFS queue
+    Mat visited = Mat::zeros(markers.size(), CV_8U);
+    std::queue<Point> bfsQueue;
+
+    const int rows = markers.rows;
+    const int cols = markers.cols;
+
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < cols; ++x) {
+            int markerValue = markers.at<int>(y, x);
+            bool isLabeledRegion = markerValue > 1;
+
+            if (isLabeledRegion) {
+                bfsQueue.push(Point(x, y));
+                visited.at<uchar>(y, x) = 1;
+            }
+        }
+    }
+
+    const std::vector<Point> directions = {
+        Point(0, 1),  // right
+        Point(1, 0),  // down
+        Point(0, -1), // left
+        Point(-1, 0)  // up
+    };
+
+    while (!bfsQueue.empty()) {
+        Point current = bfsQueue.front();
+        bfsQueue.pop();
+
+        int currentLabel = markers.at<int>(current);
+
+        for (const auto& dir : directions) {
+            Point neighbor = current + dir;
+
+            // Skip out-of-bounds points
+            if (neighbor.x < 0 || neighbor.x >= cols || neighbor.y < 0 || neighbor.y >= rows)
+                continue;
+
+            uchar& visitedFlag = visited.at<uchar>(neighbor);
+            int& neighborLabel = markers.at<int>(neighbor);
+
+            if (!visitedFlag) {
+                if (neighborLabel == 0) {
+                    // Expand into unlabeled (unknown) region
+                    neighborLabel = currentLabel;
+                    visitedFlag = 1;
+                    bfsQueue.push(neighbor);
+                } else if (neighborLabel != currentLabel && neighborLabel != 1) {
+                    // Conflict: adjacent to a different region (not background)
+                    markers.at<int>(current) = -1; // mark as boundary
+                }
+            }
+        }
+    }
+
+
+    //splitLargeRegions(markers);
+
+
+    Mat output(markers.size(), CV_8UC3, Scalar(0, 0, 0));
+
+    std::map<int, Vec3b> labelToColor;
+    int regionCount = 0;
+
+    for (int y = 0; y < markers.rows; ++y) {
+        for (int x = 0; x < markers.cols; ++x) {
+            int label = markers.at<int>(y, x);
+            Vec3b& pixel = output.at<Vec3b>(y, x);
+
+            if (label == -1) {
+                // Boundary between regions
+                pixel = Vec3b(255, 255, 255);
+            } else if (label > 1) {
+                // Assign a random color if this label hasn't been seen yet
+                if (labelToColor.find(label) == labelToColor.end()) {
+                    Vec3b randomColor(rand() % 256, rand() % 256, rand() % 256);
+                    labelToColor[label] = randomColor;
+                    regionCount++;
+                }
+                pixel = labelToColor[label];
+            }
+        }
+    }
+
+
+    cvtColor(output, output, COLOR_BGR2RGB);
+
+    return { output, regionCount, markers };
+}
+
+// ---------------------------------- //
+// ---------- ^WATERSHED^ ----------- //
+// ---------------------------------- //
+
+
+
+
+// ---------------------------------- //
+// -------- other ANALYSIS ---------- //
+// ---------------------------------- //
 
 std::vector<double> calculateNSI(const cv::Mat& markersArg) {
     using namespace cv;
@@ -286,3 +449,8 @@ cv::Mat createNSIHeatmap(const cv::Mat& markers, const std::vector<double>& nsis
 
     return heatmap;
 }
+
+// ---------------------------------- //
+// ------- ^other ANALYSIS^ --------- //
+// ---------------------------------- //
+

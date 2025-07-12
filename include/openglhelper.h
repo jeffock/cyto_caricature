@@ -7,6 +7,13 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
+// Tableview
+#include <fstream>
+
+
+// ------------------------- //
+// ------- Rendering ------- //
+// ------------------------- //
 
 void OpenImage(GLuint& imageTexture, int& imageWidth, int& imageHeight) {
     const char* filter_patterns[] = { "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.tif", "*.tiff" };
@@ -110,6 +117,17 @@ void DebugMatAndTexture(const cv::Mat& img, const std::string& context = "") {
     std::cout << "----------------------------" << std::endl;
 }
 
+// ------------------------- //
+// ------ ^Rendering^ ------ //
+// ------------------------- //
+
+
+
+
+// ------------------------- //
+// ----- Miscellaneous ----- //
+// ------------------------- //
+
 std::string ShowSaveFileDialog(HWND owner = nullptr, const char* filter = "PNG Files\0*.png\0All Files\0*.*\0")
 {
     char filename[MAX_PATH] = "";
@@ -128,3 +146,61 @@ std::string ShowSaveFileDialog(HWND owner = nullptr, const char* filter = "PNG F
     else
         return "";  // User canceled
 }
+
+void ShowDataTableAndExport(bool* pOpen, std::vector<double>& data) {
+    if (!pOpen || !(*pOpen)) return;
+
+    ImGui::Begin("Data Table", pOpen); // window will close if *pOpen is set to false
+
+    // Render the table
+    if (ImGui::BeginTable("DataTable", 2, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+        ImGui::TableSetupColumn("Index");
+        ImGui::TableSetupColumn("Value");
+        ImGui::TableHeadersRow();
+
+        for (size_t i = 0; i < data.size(); ++i) {
+            ImGui::TableNextRow();
+            ImGui::TableSetColumnIndex(0);
+            ImGui::Text("%zu", i);
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Text("%.6f", data[i]);
+        }
+
+        ImGui::EndTable();
+    }
+
+    if (ImGui::Button("Export to CSV")) {
+        const char* filterPatterns[] = { "*.csv" };
+        const char* savePath = tinyfd_saveFileDialog(
+            "Save CSV File",
+            "export.csv",
+            1,
+            filterPatterns,
+            "CSV files"
+        );
+
+        if (savePath) {
+            std::ofstream file(savePath);
+            if (file.is_open()) {
+                file << "Index,Value\n";
+                for (size_t i = 0; i < data.size(); ++i)
+                    file << i << "," << data[i] << "\n";
+                file.close();
+            }
+        }
+    }
+
+    ImGui::SameLine();
+
+    // Exit button
+    if (ImGui::Button("Close Table")) {
+        *pOpen = false;
+    }
+
+    ImGui::End();
+}
+
+// ------------------------- //
+// ---- ^Miscellaneous^ ---- //
+// ------------------------- //
+

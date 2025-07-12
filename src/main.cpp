@@ -116,6 +116,11 @@ int main()
     bool showObjectCntPopup = false;
     bool showNSIEmptyPopup = false;
     bool showNSISummaryPopup = false;
+    bool showLicensePopup = false;
+
+    // Other bools
+    bool showDataTable = false;
+    bool showNSITable = false;
 
     // Image analysis
     std::vector<double> nsis;
@@ -285,6 +290,42 @@ int main()
             cellsSegmented = true;
             showObjectCntPopup = true;
         }
+         // ======== Ctrl+Shift+W ========= //
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+            if (singleChannel && isGrayscale && isBinary) {
+                watershedOut = runCustomWatershed(currentImage); 
+                undoStack.push(currentImage.clone());
+                while (!redoStack.empty()) redoStack.pop();
+                currentImage = watershedOut.watershedOutImg;
+                objectCount = watershedOut.count;
+                UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                cellsSegmented = true;
+                showObjectCntPopup = true;
+            } 
+            else {
+                showPrereqPopup = true;
+            }
+        }
+        // ============ Ctrl+2 =========== //
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
+            glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS) {
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
+            
+            currentImage = showBlueChannelOnly(currentImage);
+            currentImage = toGrayscale(currentImage);
+            currentImage = gaussianFilter(currentImage);
+            currentImage = intensityThreshold(currentImage);
+            
+            WatershedOutput watershedOut = runCustomWatershed(currentImage); 
+            currentImage = watershedOut.watershedOutImg;
+            objectCount = watershedOut.count;
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+            cellsSegmented = true;
+            showObjectCntPopup = true;
+        }
         // ============ Ctrl+N =========== //
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
@@ -300,6 +341,8 @@ int main()
                 avgNSI = sum / nsis.size();
 
                 showNSISummaryPopup = true;
+                showDataTable = true;
+                showNSITable = true;
             }
         }
         // ============ Ctrl+H =========== //
@@ -418,7 +461,7 @@ int main()
 
             if (ImGui::BeginMenu("Analyze")) {
 
-                if (ImGui::MenuItem("Object Count (Watershed only)", "Ctrl+W")) {
+                if (ImGui::MenuItem("Object Count (Watershed[OpenCV])", "Ctrl+W")) {
                     if (singleChannel && isGrayscale && isBinary) {
                         watershedOut = runWatershed(currentImage); 
                         undoStack.push(currentImage.clone());
@@ -434,7 +477,7 @@ int main()
                     }
                 }
 
-                if (ImGui::MenuItem("Object Count (pre-processing & Watershed)", "Ctrl+1")) {
+                if (ImGui::MenuItem("Object Count (pre-processing & Watershed[OpenCV])", "Ctrl+1")) {
                     undoStack.push(currentImage.clone());
                     while (!redoStack.empty()) redoStack.pop();
                     
@@ -444,6 +487,39 @@ int main()
                     currentImage = intensityThreshold(currentImage);
                     
                     WatershedOutput watershedOut = runWatershed(currentImage); 
+                    currentImage = watershedOut.watershedOutImg;
+                    objectCount = watershedOut.count;
+                    UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                    cellsSegmented = true;
+                    showObjectCntPopup = true;
+                }
+
+                if (ImGui::MenuItem("Object Count (Watershed[Custom])", "Ctrl+Shift+W")) {
+                    if (singleChannel && isGrayscale && isBinary) {
+                        watershedOut = runCustomWatershed(currentImage); 
+                        undoStack.push(currentImage.clone());
+                        while (!redoStack.empty()) redoStack.pop();
+                        currentImage = watershedOut.watershedOutImg;
+                        objectCount = watershedOut.count;
+                        UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
+                        cellsSegmented = true;
+                        showObjectCntPopup = true;
+                    } 
+                    else {
+                        showPrereqPopup = true;
+                    }
+                }
+
+                if (ImGui::MenuItem("Object Count (pre-processing & Watershed[Custom])", "Ctrl+2")) {
+                    undoStack.push(currentImage.clone());
+                    while (!redoStack.empty()) redoStack.pop();
+                    
+                    currentImage = showBlueChannelOnly(currentImage);
+                    currentImage = toGrayscale(currentImage);
+                    currentImage = gaussianFilter(currentImage);
+                    currentImage = intensityThreshold(currentImage);
+                    
+                    WatershedOutput watershedOut = runCustomWatershed(currentImage); 
                     currentImage = watershedOut.watershedOutImg;
                     objectCount = watershedOut.count;
                     UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
@@ -480,6 +556,10 @@ int main()
 
             if (ImGui::BeginMenu("Help")) {
                 ImGui::MenuItem("README", "TODO");
+                if (ImGui::MenuItem("Copyright")) {
+                    showLicensePopup = true;
+                    ImGui::OpenPopup("GNU License");
+                }
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
@@ -549,10 +629,63 @@ int main()
             ImGui::EndPopup();
         }
 
+        // for Copyright
+        if (showLicensePopup) {
+            ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_Always);
+            ImGui::OpenPopup("GNU License");
+            showNSIEmptyPopup = false;
+        } 
+        if (ImGui::BeginPopupModal("GNU License", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+            ImGui::TextWrapped(
+                "Copyright (C) 2025 Jeffrey Ock\n\n"
+                "This program is free software: you can redistribute it and/or modify\n"
+                "it under the terms of the GNU General Public License as published by\n"
+                "the Free Software Foundation, either version 3 of the License, or\n"
+                "(at your option) any later version.\n\n"
+                "This program is distributed in the hope that it will be useful,\n"
+                "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+                "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+                "GNU General Public License for more details.\n\n"
+                "You should have received a copy of the GNU General Public License\n"
+                "along with this program.  If not, see https://www.gnu.org/licenses/"
+            );
+
+            ImGui::Separator();
+
+            if (ImGui::Button("Close")) {
+                ImGui::CloseCurrentPopup();
+                showLicensePopup = false;
+            }
+
+            ImGui::EndPopup();
+        }
+        
+
         // ------------------------- //
         // -------- ^Popups^ ------- //
         // ------------------------- //
 
+
+
+
+        // ------------------------- //
+        // ------ Table View ------- //
+        // ------------------------- //
+
+        if (showNSITable) {
+            ShowDataTableAndExport(&showDataTable, nsis);
+        }
+
+        // ------------------------- //
+        // ----- ^Table View^ ------ //
+        // ------------------------- //
+
+
+
+
+        // ------------------------- //
+        // ------ Rendering -------- //
+        // ------------------------- //
 
         if (showImageViewer) {
             if (ImGui::Begin(imageFilename.c_str(), &showImageViewer, ImGuiWindowFlags_HorizontalScrollbar)) {
@@ -581,6 +714,13 @@ int main()
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window);
+
+
+        // ------------------------- //
+        // ------ ^Rendering^ ------ //
+        // ------------------------- //
+
+
     }
 
     // --------------------------- //
