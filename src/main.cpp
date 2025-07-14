@@ -254,7 +254,7 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             if (singleChannel && isGrayscale && isBinary) {
-                WatershedOutput watershedOut = runWatershed(currentImage); 
+                watershedOut = runWatershed(currentImage); 
                 //previousImage = currentImage.clone();
                 undoStack.push(currentImage.clone());
                 while (!redoStack.empty()) redoStack.pop();
@@ -319,7 +319,7 @@ int main()
             currentImage = gaussianFilter(currentImage);
             currentImage = intensityThreshold(currentImage);
             
-            WatershedOutput watershedOut = runCustomWatershed(currentImage); 
+            watershedOut = runCustomWatershed(currentImage); 
             currentImage = watershedOut.watershedOutImg;
             objectCount = watershedOut.count;
             UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
@@ -330,6 +330,11 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS &&
             glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
             nsis = calculateNSI(watershedOut.markers);
+            cv::Mat labeledImgNSI = drawNSILabels(watershedOut.markers);
+            undoStack.push(currentImage.clone());
+            while (!redoStack.empty()) redoStack.pop();
+            currentImage = labeledImgNSI.clone();
+            UpdateTextureFromMat(currentImage, imageTexture, imageWidth, imageHeight);
 
             if (nsis.empty()) {
                 showNSIEmptyPopup = true;

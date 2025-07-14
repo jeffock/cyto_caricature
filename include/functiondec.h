@@ -131,6 +131,8 @@ struct WatershedOutput {
     cv::Mat markers;
 };
 
+// ---------- OpenCV ------------- //
+
 WatershedOutput runWatershed(const cv::Mat& originalImg) 
 {
     using namespace cv;
@@ -202,6 +204,7 @@ WatershedOutput runWatershed(const cv::Mat& originalImg)
     return { output, count, markers };
 }
 
+// ---------- Custom ---------- //
 
 WatershedOutput runCustomWatershed(const cv::Mat& originalImg) 
 {
@@ -395,6 +398,64 @@ std::vector<double> calculateNSI(const cv::Mat& markersArg) {
     }
 
     return nsis;
+}
+
+cv::Mat drawNSILabels(const cv::Mat& markers) {
+    using namespace cv;
+
+    CV_Assert(markers.type() == CV_32S);
+
+    std::map<int, int> labelToIndex;
+    std::map<int, Vec3b> labelToColor;
+    int index = 0;
+
+    // Prepare base image (color-coded markers)
+    Mat output(markers.size(), CV_8UC3, Scalar(0, 0, 0));
+
+    for (int r = 0; r < markers.rows; ++r) {
+        for (int c = 0; c < markers.cols; ++c) {
+            int label = markers.at<int>(r, c);
+
+            if (label == -1) {
+                output.at<Vec3b>(r, c) = Vec3b(255, 255, 255);  // boundary = white
+            } else if (label > 1) {
+                if (labelToColor.find(label) == labelToColor.end()) {
+                    labelToColor[label] = Vec3b(rand() % 256, rand() % 256, rand() % 256);
+                    labelToIndex[label] = index++;
+                }
+                output.at<Vec3b>(r, c) = labelToColor[label];
+            }
+        }
+    }
+
+    // Draw index labels
+    for (const auto& [label, idx] : labelToIndex) {
+        Mat mask = (markers == label);
+        Moments m = moments(mask, true);
+        if (m.m00 == 0) continue;
+
+        int cx = static_cast<int>(m.m10 / m.m00);
+        int cy = static_cast<int>(m.m01 / m.m00);
+
+        std::string labelStr = std::to_string(idx);
+        double fontScale = 0.33;
+        int thickness = 1;
+        int baseline = 0;
+
+        cv::Size textSize = getTextSize(labelStr, FONT_HERSHEY_SIMPLEX, fontScale, thickness, &baseline);
+        Point textOrg(cx - textSize.width / 2, cy + textSize.height / 2);
+
+        putText(output,
+                labelStr,
+                textOrg,
+                FONT_HERSHEY_SIMPLEX,
+                fontScale,
+                Scalar(255, 255, 255),
+                thickness,
+                LINE_AA);
+    }
+
+    return output;
 }
 
 // Helper: map normalized NSI (0-1) to blue-red color
