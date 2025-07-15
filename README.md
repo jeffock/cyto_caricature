@@ -1,4 +1,6 @@
-[![Version](https://img.shields.io/badge/version-2..com/jeffock/cyto_caricature://img.shields.io/badge/document CytoCaricature
+
+[![Version](https://img.shields.io/badge/version-2.0.1-green.svg)](https://github.com/jeffock/cyto_caricature/releases)
+[![Docs](https://img.shields.io/badge/documentation-WIP-orange.svg)]()
 
 **CytoCaricature** is a research-driven tool for advanced cell analysis, originally developed to meet specific needs in scientific imaging. While tailored for cell analysis, it can be applied to a wide range of image-processing tasks.
 
@@ -62,7 +64,3 @@ Download the latest binaries and see release notes in the [Releases](https://git
 For questions, feedback, or collaboration, feel free to reach out via GitHub Issues.
 
 *Thank you for checking out CytoCaricature! If you find this project useful, please consider starring or sharing it.*
-
-[1] https://img.shields.io/badge/version-2.0.1-green.svg
-[2] https://github.com/jeffock/cyto_caricature/releases
-[3] https://img.shields.io/badge/documentation-WIP-orange.svg
