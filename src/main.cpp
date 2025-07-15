@@ -52,7 +52,14 @@ int main()
 
     // Initialize GLFW
     if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW\n";
+        std::cerr << "[Error] Failed to initialize GLFW.\n"
+                  << "Possible causes:\n"
+                  << "  - Missing or incompatible graphics drivers\n"
+                  << "  - Insufficient system resources\n"
+                  << "Actions:\n"
+                  << "  - Ensure your system has up-to-date graphics drivers\n"
+                  << "  - Reboot your computer and try again\n"
+                  << "  - Visit https://www.glfw.org/docs/3.3/ for troubleshooting\n";
         return -1;
     }
 
@@ -64,7 +71,15 @@ int main()
     // Create a windowed mode window and its OpenGL context
     GLFWwindow* window = glfwCreateWindow(1280, 720, "CytoCaricature", NULL, NULL);
     if (!window) {
-        std::cerr << "Failed to create GLFW window\n";
+        std::cerr << "[Error] Failed to create GLFW window.\n"
+                  << "Possible causes:\n"
+                  << "  - Your GPU or driver does not support OpenGL 3.3 Core Profile\n"
+                  << "  - Remote desktop or virtual machine environments may not support OpenGL\n"
+                  << "Actions:\n"
+                  << "  - Make sure your hardware supports OpenGL 3.3 or higher\n"
+                  << "  - Update your graphics drivers\n"
+                  << "  - If using an Intel GPU, consider switching to a lower OpenGL version\n"
+                  << "  - Try running the program on a different machine\n";
         glfwTerminate();
         return -1;
     }
@@ -73,7 +88,13 @@ int main()
 
     // Initialize GLAD
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD\n";
+        std::cerr << "[Error] Failed to initialize GLAD (OpenGL function loader).\n"
+                  << "Possible causes:\n"
+                  << "  - OpenGL context was not created successfully\n"
+                  << "  - Graphics driver issues\n"
+                  << "Actions:\n"
+                  << "  - Ensure your system supports OpenGL 3.3 or higher\n"
+                  << "  - Check that your drivers are up to date\n";
         return -1;
     }
 
