@@ -240,6 +240,8 @@ WatershedOutput runCustomWatershed(const cv::Mat& originalImg)
 
     sureFg.convertTo(sureFg, CV_8U);
 
+    Mat closingKernel = getStructuringElement(MORPH_ELLIPSE, Size(7, 7)); 
+    morphologyEx(sureFg, sureFg, MORPH_CLOSE, closingKernel, Point(-1,-1), 1);
 
     Mat unknown;
     subtract(sureBg, sureFg, unknown);
@@ -392,7 +394,7 @@ std::vector<double> calculateNSI(const cv::Mat& markersArg) {
 
         // Avoid divide-by-zero
         if (area > 0)
-            nsis.push_back((perimeter * perimeter) / (4 * CV_PI * area));
+            nsis.push_back((4 * CV_PI * area) / (perimeter * perimeter));
         else
             nsis.push_back(0.0);
     }
