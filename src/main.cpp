@@ -63,7 +63,7 @@ int main()
         return -1;
     }
 
-    // OpenGL context version (e.g. 3.3)
+    // OpenGL context version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -98,22 +98,17 @@ int main()
         return -1;
     }
 
-    // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    // Setup Dear ImGui style
     ImGui::StyleColorsLight();
 
-    // Load Segoe UI at 18pt
     io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\segoeui.ttf", 21.0f);
 
-    // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    // Initial values
     GLuint imageTexture = 0;
     int imageWidth = 0;
     int imageHeight = 0;
@@ -169,10 +164,8 @@ int main()
 
     while (!glfwWindowShouldClose(window)) {
 
-        // Poll and handle events
         glfwPollEvents();
 
-        // Start ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -729,7 +722,6 @@ int main()
 
         //showImageViewer = true;
 
-        // Rendering
         ImGui::Render();
         int display_w, display_h;
 

@@ -1,3 +1,6 @@
+# CytoCaricature
+
+![Logo](images/logo_1.png)
 
 [![Version](https://img.shields.io/badge/release-v2.0.1-green.svg)](https://github.com/jeffock/cyto_caricature/releases)
 [![Docs](https://img.shields.io/badge/documentation-WIP-orange.svg)]()
