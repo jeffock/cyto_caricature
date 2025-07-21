@@ -1,4 +1,3 @@
-# CytoCaricature
 
 ![Logo](images/logo_1.png)
 
