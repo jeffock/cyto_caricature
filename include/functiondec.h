@@ -183,21 +183,39 @@ WatershedOutput runWatershed(const cv::Mat& originalImg)
     int count = 0;
     std::map<int, Vec3b> colorMap;
 
+    std::set<int> objectLabels;
     for (int r = 0; r < markers.rows; ++r) {
         for (int c = 0; c < markers.cols; ++c) {
-            int idx = markers.at<int>(r, c);
-            if (idx == -1) {
+            int label = markers.at<int>(r, c);
+            if (label == -1) {
                 output.at<Vec3b>(r, c) = Vec3b(255, 255, 255); // boundary
             }
-            else if (idx > 1) {
-                if (colorMap.find(idx) == colorMap.end()) {
-                    colorMap[idx] = Vec3b(rand() % 256, rand() % 256, rand() % 256);
+            else if (label > 1) {
+                objectLabels.insert(label);
+                if (colorMap.find(label) == colorMap.end()) {
+                    colorMap[label] = Vec3b(rand() % 256, rand() % 256, rand() % 256);
                     count++;
                 }
-                output.at<Vec3b>(r, c) = colorMap[idx];
+                output.at<Vec3b>(r, c) = colorMap[label];
             }
         }
     }
+
+    /*
+    // feature extraction
+    for (int label : objectLabels) {
+        Mat singleObjMask = (markers == label);
+
+        std::vector<std::vector<Point>> contours;
+        findContours(singleObjMask, contours, RETR_EXTERNAL, CHAIN_APPROX_SIMPLE);
+        if (contours.empty()) continue;
+
+        Rect bbox = boundingRect(contours[0]);
+
+        Moments m = moments(contours[0]);
+        Point2f centroid(m.m10 / m.m00, m.m01 / m.m00);
+    }
+    **/
 
     cvtColor(output, output, COLOR_BGR2RGB);
 
